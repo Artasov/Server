@@ -1,0 +1,74 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}xlartas | first task{% endblock %}
+
+{% block content %}
+    <div class="u">
+        <div class="u__container">
+            <div class="u__content" style="justify-content: center; gap: 40px;">
+                <p class="u-title">First Task</p>
+                <form class="u__form" method="post" action="{% url 'task_first' %}">{% csrf_token %}
+                    <div class="u-help">
+                        {% if roots %}
+                            <div class="u__fields" style="flex-direction: row; gap: 20px; margin-bottom: 20px;">
+                                <span class="u-text" style="color: #72ff5d;">Solution: </span>
+                                {% for value in roots %}
+                                    <span class="u-text" style="color: #ffbcd6;">{{ value }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        {% if invalid %}
+                            <span class="invalid">{{ invalid }}</span>
+                        {% endif %}
+                        <div class="u__fields" style="gap: 10px; width: 100%;">
+                            <p class="u-text">Enter the coefficients of the equation</p>
+                            <div class="u__fields" style="flex-direction: row; gap: 20px; margin-top: 20px;">
+                                <input class="u-text coeff" type="text" name="a" placeholder="A" required
+                                       style="background-color: rgba(0,0,0,0);
+                                              max-width: 120px;
+                                              border: 2px solid #EEEEEE;
+                                              border-radius: 8px;
+                                              text-align: center;">
+                                <input class="u-text coeff" type="text" name="b" placeholder="B" required
+                                       style="background-color: rgba(0,0,0,0);
+                                              max-width: 120px;
+                                              border: 2px solid #EEEEEE;
+                                              border-radius: 8px;
+                                              text-align: center;">
+                                <input class="u-text coeff" type="text" name="c" placeholder="C" required
+                                       style="background-color: rgba(0,0,0,0);
+                                              max-width: 120px;
+                                              border: 2px solid #EEEEEE;
+                                              border-radius: 8px;
+                                              text-align: center;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <input class="u-submit" type="submit" value="SOLVE" style="margin: 0 !important;">
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        coeffs = document.getElementsByClassName('coeff')
+        for (let i = 0; i<coeffs.length; i++){
+            coeffs[i].addEventListener('input', function (e) {
+                //coeffs[i].nodeValue = coeffs[i].nodeValue.replace(',', '.');
+                if(!isDigit(e.data) && e.data !== ',' && e.data !== '.'){
+                    coeffs[i].value = coeffs[i].value.slice(0, -1);
+                }
+                if(e.data === ','){
+                    coeffs[i].value = coeffs[i].value.slice(0, -1) + '.';
+                }
+
+            })
+        }
+
+        window.addEventListener('load', function (e) {
+            document.getElementsByTagName('footer')[0].style.display = 'none';
+        });
+    </script>
+{% endblock %}
