@@ -1,0 +1,214 @@
+@import "adaptiv_mixin"
+
+=main_bg_color($opacity)
+   background-color: rgba(25, 25, 25, $opacity)
+
+._when-menu-on
+   background-color: rgba(25, 25, 25, 1) !important
+
+
+header
+   transition: all 80ms ease
+   font-family: 'Outfit', sans-serif
+   user-select: none
+   position: fixed
+   top: 0
+   left: 0
+   height: 80px
+   width: 100%
+   z-index: 10
+   background: rgba(0,0,0,0)
+   .header__container
+      //border: 1px solid red
+      height: 100%
+      max-width: 1100px
+      margin: 0 auto
+      display: flex
+      justify-content: space-around
+      align-items: center
+      .header__logo-block
+         // border: 1px solid blue
+         display: flex
+         flex-direction: column
+         align-items: center
+         justify-content: center
+         height: 100%
+         padding: 0 17px 0 5px
+         //+adaptiv-value('padding-left', 1100, 1920, 170, 0, 3)
+         .header__logo
+            height: 50%
+            filter: invert(1)
+      .menu__burger-btn
+         //border: 1px solid green
+         height: 100%
+         width: 70px
+         display: flex
+         justify-content: space-between
+         transform: rotate(90deg) scale(0.3)
+         span
+            color: red
+            display: block
+            background: rgba(255, 255, 255, 1)
+            height: 100%
+            width: 5px
+
+
+._pc
+   user-select: none
+   .menu__burger-btn
+      pointer-events: none
+      visibility: hidden
+   .header__menu
+      letter-spacing: 4px
+      //border: 1px solid blue
+      height: 100%
+      flex: 1 0 0
+      display: flex
+      justify-content: space-between
+      .header__menu-pc
+         width: 100%
+         display: flex
+         justify-content: center
+         .header__menu-el
+            //border: 1px solid green
+            position: relative
+            display: flex
+            align-items: center
+            color: #f5f5f5
+            width: 25%
+            text-align: center
+            &::after
+               content: ""
+               transition: background-color 400ms cubic-bezier(0.165, 0.84, 0.44, 1)
+               position: absolute
+               height: 1px
+               width: 100%
+               bottom: 0
+               //left: -40px
+            &:hover::after
+               background-color: #f5f5f5
+            &:hover li
+               transform: scale(1.1)
+            li
+               //border: 1px solid red
+               transition: transform 400ms cubic-bezier(0.165, 0.84, 0.44, 1)
+               font-size: 22px
+               font-weight: 500
+               text-align: center
+               margin: 0 auto
+      .header__login-reg
+         //border: 1px solid white
+         display: flex
+         justify-content: space-between
+         .header__login-reg-el
+            position: relative
+            top: 3px
+            display: flex
+            align-items: center
+            color: #f5f5f5
+            margin: 0 10px
+            cursor: pointer
+            li
+               transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1)
+               padding: 10px 15px
+               font-size: 18px
+               font-weight: 400
+               border-radius: 20px
+               border: 2px solid rgba(255,255,255, 0.2)
+               white-space: nowrap
+               text-align: center
+               &:hover
+                  transform: scale(1.1)
+                  background-color: #ab3045
+                  border: 2px solid rgba(255,255,255, 0)
+
+._touch
+   user-select: none
+   .menu__burger-btn
+      pointer-events: all
+      visibility: visible
+   .header__menu
+      //border: 1px solid blue
+      letter-spacing: 3px
+      transition: left 200ms cubic-bezier(0.165, 0.84, 0.44, 1)
+      margin: 80px 0 0 0
+      position: absolute
+      top: 0
+      left: -100%
+      min-height: calc(100vh - 80px)
+      width: 100%
+      display: flex
+      flex-direction: column
+      justify-content: center
+      +main_bg_color(0.97)
+      .header__menu-pc
+         //border: 1px solid red
+         display: flex
+         flex-direction: column
+         justify-content: center
+         .header__menu-el
+            //border: 1px solid green
+            position: relative
+            display: flex
+            flex-direction: column
+            justify-content: center 
+            color: #f5f5f5
+            padding: 30px
+            li
+               //border: 1px solid red
+               font-family: 'Outfit', sans-serif
+               transition: none
+               +adaptive-font(40, 45, 1100)
+               font-weight: 500
+               text-align: center
+            &::after
+               content: ""
+               height: 1px
+               background-color: #f5f5f5
+               width: 70%
+               position: absolute
+               bottom: 0
+               left: 15%
+            &:last-child
+               &::after
+                  content: ""
+                  height: 0px
+            
+      .header__login-reg
+         //border: 1px solid blue
+         display: flex
+         flex-direction: column
+         justify-content: center
+         align-items: center
+         padding-bottom: 7%
+         padding-top: 7%
+         margin-bottom: 25%
+         gap: 20px
+         //height: calc(100vh - 160px)
+         .header__login-reg-el
+            font-family: 'Outfit', sans-serif
+            position: relative
+            top: 3px
+            display: flex
+            align-items: center
+            color: #191919
+            font-weight: 500 
+            li
+               font-family: 'Outfit', sans-serif
+               transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1)
+               padding: 10px 15px
+               font-size: 18px
+               font-weight: 400
+               border-radius: 20px
+               border: 2px solid rgba(255,255,255, 0)
+               &:hover
+                  transform: scale(1.1)
+                  background-color: #ff5362
+                  border: 2px solid rgba(255,255,255, 0)
+               &:first-child
+                  background-color: rgba(255, 255, 255, 1)
+            &:last-child
+               padding: 0
+   ._active_menu
+      left: 0
+   

@@ -1,0 +1,51 @@
+{% extends 'index.html' %}
+{%  load static %}
+{% load sass_tags %}
+
+{% block title %}xlartas | SHOP{% endblock %}
+
+{% block link_content_css %}
+    <link href="{% sass_src 'shop/css/main_shop.sass' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+    <div class="shop">
+	    <div class="shop__container">
+	    	<div class="shop__content">
+	    		<div class="products">
+                    {% for product in context.values %}
+	    			    <div class="product">
+	    			    	<a href="{% url product.name %}" class="product__img-block">
+                                {% if product.name == 'xL Guild Manager' %}
+                                    <img class="product-img" src="{% static 'shop/img/xLGM.png' %}" alt="">
+                                {% endif %}
+                                {% if product.name == 'xLUMRA' %}
+                                    <img class="product-img" src="{% static 'shop/img/xLUMRA.png' %}" alt="">
+                                {% endif %}
+                                {% if product.name == 'xLCracker' %}
+                                    <img class="product-img" src="{% static 'shop/img/xLCracker.png' %}" alt="">
+                                {% endif %}
+	    			    	</a>
+	    			    	<a href="{% url product.name %}" class="product-name">{{ product.name }}</a>
+	    			    	<form action="{% url 'shop' %}" method="post" class="product__buy-block">{% csrf_token %}
+	    			    		<input type="submit" class="btn-buy" value="Buy">
+	    			    		<div class="price-block">
+	    			    			<p class="price">{{ product.price }}₽</p>
+	    			    		</div>
+                                <input type="hidden" name="product" value="{{ product.name }}">
+	    			    	</form>
+	    			    </div>
+                    {% endfor %}
+                    {% if reg_need %}
+                        <script>
+                            window.addEventListener('load', function(e) {
+                                document.getElementsByClassName('menu__burger-btn')[0].click();
+                                document.getElementsByClassName('btn_reg')[0].click();
+                            });
+                        </script>
+                    {% endif %}
+	    		</div>
+	    	</div>
+	    </div>
+    </div>
+{% endblock %}

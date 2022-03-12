@@ -1,0 +1,60 @@
+{% extends 'index.html' %}
+{%  load static %}
+
+{% block title %}xlartas | Donate{% endblock %}
+
+{% block content %}
+    <div class="u">
+        <div class="u__container">
+            <div class="u__content">
+                <form class="u__form" method="post" action="{% url 'donate' %}">{% csrf_token %}
+                    <div class="u-help">
+                        {% if invalid %}
+                            <span class="invalid">{{ invalid }}</span>
+                        {% endif %}
+                        <div class="u__fields">
+                            <input name="value" type="number" placeholder="Value RUB" class="u__field">
+                            <input name="comment" type="text" placeholder="Comment" class="u__field">
+                        </div>
+                    </div>
+
+                    <input class="u-submit" type="submit" value="Donate">
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        let inputs = document.getElementsByClassName('u__field')
+        for (let i = 0; i < inputs.length; i++){
+            inputs[i].addEventListener('blur', function (e) {
+                if(inputs[i].value !== ''){
+                    inputs[i].style.borderColor = '#ff5f6c';
+                }
+                else{
+                    inputs[i].style.borderColor = 'rgba(244, 247, 245, 0.7)';
+                }
+            })
+        }
+        window.addEventListener('load', function(e) {
+            var for_insert = document.getElementsByClassName('u-submit')[0];
+            var el = document.createElement('script');
+            el.setAttribute('src', 'https://www.google.com/recaptcha/api.js');
+            var el2 = document.createElement('div');
+            if(document.getElementsByTagName('body')[0].classList.contains('_touch')){
+                el2.setAttribute("data-size", "compact")
+            }
+            el2.setAttribute("data-sitekey", "6Lf7QWkeAAAAAJUL-Uso3d9nM2UDahBKTFhPkDfr");
+            el2.classList.add('g-recaptcha');
+            for_insert.before(el);
+            for_insert.before(el2);
+        });
+    </script>
+    <script>
+         window.addEventListener('load', function(e) {
+             document.getElementsByTagName('footer')[0].style.position = 'absolute';
+             document.getElementsByTagName('footer')[0].style.bottom = '0';
+             document.getElementsByTagName('footer')[0].style.left = '1%';
+         });
+    </script>
+
+{% endblock %}

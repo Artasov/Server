@@ -1,0 +1,82 @@
+{% extends 'index.html' %}
+{%  load static %}
+
+{% block title %}xlartas | PAY{% endblock %}
+
+{% block content %}
+    <div class="u">
+        <div class="u__container">
+            <div class="u__content" style="justify-content: center; gap: 40px;">
+                <p class="u-title">Payment</p>
+                <form class="u__form" method="post" action="{% url 'pay' %}">{% csrf_token %}
+                    <div class="u-help">
+                        <div class="u__fields">
+                            <p class="u-field u-text3" style="line-height: 1.5em; color: #f5f5f5;">
+                                Product: {{ bill.customFields.product }}<br>
+                                License time: {{ bill.customFields.license_time }}<br>
+                                Price: {{ bill.amount.value }} {{ bill.amount.currency }}<br>
+                                Status: {{ bill.status.value }}<br>
+                            </p>
+                            <a href="{% url 'terms_and_conditions' %}" style="font-weight: 600" class="invalid">Terms And Conditions</a>
+                            <a href="{{ bill.payUrl }}" target="_blank" style="border: 2px solid #ff5f6c; padding: 0 5px; text-align: center;" class="pay-btn u__field">
+                                <p style="overflow: hidden; color: #ff5f6c;">Pay</p>
+                            </a>
+                            <style>
+                                .input_:hover{
+                                    border: 2px solid #ff5f6c !important;
+                                }
+                                .u__field-radio-hover:hover{
+                                    transform: scale(1.05);
+                                }
+                                .pay-btn:hover{
+                                    transform: scale(1.05);
+                                }
+                            </style>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        let inputs = document.getElementsByClassName('u__field');
+        for (let i = 0; i < inputs.length; i++){
+            inputs[i].addEventListener('blur', function (e) {
+                if(inputs[i].value !== ''){
+                    inputs[i].style.borderColor = '#ff5f6c';
+                }
+                else{
+                    inputs[i].style.borderColor = 'rgba(244, 247, 245, 0.7)';
+                }
+            })
+        }
+
+        function radio_click(index) {
+            let radio = document.getElementsByClassName('u__field-radio');
+            for (let i = 0; i < radio.length; i++){
+                radio[i].classList.remove('u__field-radio-active');
+            }
+            radio[index].classList.add('u__field-radio-active');
+            if(index === 0){
+                document.getElementById('price').value = 'price_week';
+            }
+            if(index === 1){
+                document.getElementById('price').value = 'price_month';
+            }
+            if(index === 2){
+                document.getElementById('price').value = 'price_6_month';
+            }
+            if(index === 3){
+                document.getElementById('price').value = 'price_forever';
+            }
+        }
+    </script>
+    <script>
+         window.addEventListener('load', function(e) {
+             document.getElementsByTagName('footer')[0].style.position = 'absolute';
+             document.getElementsByTagName('footer')[0].style.bottom = '0';
+             document.getElementsByTagName('footer')[0].style.left = '1%';
+         });
+    </script>
+{% endblock %}

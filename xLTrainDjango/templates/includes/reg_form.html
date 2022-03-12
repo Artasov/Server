@@ -1,0 +1,71 @@
+<form action="{% url 'home' %}" method="POST" name="reg-form" accept-charset="UTF-8"  class="reg-form">
+	{% csrf_token %}
+
+
+	<p class="reg-form__title">
+		Registration
+		<img src="" alt="" class="close_icon-reg">
+	</p>
+
+	<div class="reg-form__fieldS">
+		<div class="reg-form__field">
+			<div class="reg-form__field-name-block"><span class="reg-form__field-name">Login<span>*</span></span></div>
+			<input type="text"	name="username" maxlength="25" class="login-input form-input" onfocus="changed_input(0);">
+		</div>
+{#        <div class="reg-form__field">#}
+{#			<div class="reg-form__field-name-block"><span class="reg-form__field-name">Nick in game<span>*</span></span></div>#}
+{#			<input type="text"	name="nickname" maxlength="25" class="nick-input form-input" onfocus="changed_input(1);">#}
+{#		</div>#}
+		<div class="reg-form__field">
+			<div class="reg-form__field-name-block"><span class="reg-form__field-name">Password<span>*</span></span></div>
+			<input type="password" name="password" maxlength="25" class="password-input form-input" onfocus="changed_input(1);">
+		</div>
+		<div class="reg-form__field">
+			<div class="reg-form__field-name-block"><span class="reg-form__field-name">Email<span>*</span></span></div>
+			<input type="text" name="email" maxlength="250" class="email-input form-input" onfocus="changed_input(2);">
+		</div>
+		<div class="reg-form__field reg-form__gender-field">
+			<div class="gender-field">
+				<span class="reg-form__field-name reg-form__field-name-gender">Gender<span>*</span></span>
+				<div class="gender-fieldS">
+					<div class="gender-field" onclick="click_on_radio(0);">
+						<span class="gender-title">M</span>
+						<input type="radio" name="gender" value="M" required class="gender-input radio">
+					</div>
+
+					<div class="gender-field" onclick="click_on_radio(1);">
+						<span class="gender-title">W</span>
+						<input type="radio" name="gender" value="W" required class="gender-input radio">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<button type="submit" class="btn-submit-reg">DONE</button>
+	<div class="warning">
+		<label>
+			<img src="" alt="" class="close-icon-reg-warning" onclick="close_warning();">
+			<p class="warning-title"><span class="warning-var">EMAIL</span> is required to fill in</p>
+			<p class="warning-text">The login must contain only letters and numbers.</p>
+		</label>
+		
+	</div>
+
+    <script>
+        window.addEventListener('load', function(e) {
+            var for_insert = document.getElementsByClassName('btn-submit-reg')[0];
+            var el = document.createElement('script');
+            el.setAttribute('src', 'https://www.google.com/recaptcha/api.js');
+            var el2 = document.createElement('div');
+            if(document.getElementsByTagName('body')[0].classList.contains('_touch')){
+                el2.setAttribute("data-size", "compact")
+            }
+            el2.setAttribute("data-sitekey", "6Lf7QWkeAAAAAJUL-Uso3d9nM2UDahBKTFhPkDfr");
+            el2.classList.add('g-recaptcha');
+            for_insert.before(el);
+            for_insert.before(el2);
+        });
+    </script>
+</form>

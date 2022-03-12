@@ -1,0 +1,26 @@
+{% extends 'index.html' %}
+{%  load static %}
+
+{% block title %}xlartas | About{% endblock %}
+
+{% block content %}
+    <div class="u">
+        <div class="u__container">
+            <div class="u__content">
+                <div class="no_scrollbar" style="display: flex; flex-direction: column; min-width: 100%; align-items: center; color: #f5f5f5; overflow-y: scroll; padding: 30px 30px 30px 30px; gap: 23px">
+
+<p class="u-text3" style="padding-bottom: 30px">Personal site xlartas</p>
+<a href="{% url 'terms_and_conditions' %}" style="font-weight: 600" class="invalid">Terms And Conditions</a>
+<a href="{% url 'privacy_policy' %}" style="font-weight: 600" class="invalid">Privacy Policy</a>
+<p class="u-text" style="color: #f5f5f5;">Contacts & Support</p>
+<p class="u-text2" style="color: #aaaaaa; line-height: 35px; max-width: 500px !important;">
+    xlartasov@gmail.com <br>
+    <a class="u-text2" style="color: #aaaaaa; line-height: 25px; max-width: 500px !important;" href="https://vk.com/xlpizdatiychel" target="_blank">vk.com/xlpizdatiychel</a>
+    <br><a class="u-text2" style="color: #aaaaaa; line-height: 25px; max-width: 500px !important;" href="https://t.me/xldeal" target="_blank">t.me/xldeal</a>
+</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

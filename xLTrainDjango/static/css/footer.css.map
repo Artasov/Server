@@ -1,0 +1,10 @@
+{
+	"version": 3,
+	"file": "footer.css",
+	"sources": [
+		"footer.sass",
+		"_adaptiv_mixin.scss"
+	],
+	"names": [],
+	"mappings": "AACA,AAAA,MAAM,CAAC;EAEJ,QAAQ,EAAE,MAAM,GAIuB;EAN1C,AAIG,MAJG,CAID,CAAC,CAAC;IACD,UAAU,EAAE,MAAM;IAClB,KAAK,EAAE,wBAAwB,GAAG"
+}

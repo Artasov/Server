@@ -1,0 +1,35 @@
+{% extends 'index.html' %}
+{%  load static %}
+{% load sass_tags %}
+
+{% block title %}xlartas{% endblock %}
+
+{% block link_content_css %}
+    <link href="{% sass_src 'home/css/registrate_confirmation.sass' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+<div class="RC">
+    <div class="RC__container">
+        <div class="RC__content">
+            <form class="RC__form" method="post" action="{% url 'registrate_confirmation' %}">
+                {% csrf_token %}
+                {% if invalid %}
+                    <span style="color: #ff5f6c">{{ invalid }}</span>
+                {% endif %}
+                <div class="RC__help1">
+                    <div class="RC__fields">
+                        <input name="CODE" class="RC__field" placeholder="Code from email">
+                    </div>
+                    <p class="ifpromblems-text">
+                        If there are problems - xlartasov.gmail.com <br>
+                        <span>Check the spam folder.</span>
+                    </p>
+                </div>
+
+                <input class="btn-RC-submit" type="submit" value="Confirm">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

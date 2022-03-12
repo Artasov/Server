@@ -1,0 +1,48 @@
+{% extends 'index.html' %}
+{%  load static %}
+
+{% block title %}xlartas | login{% endblock %}
+
+{% block content %}
+    <div class="u">
+        <div class="u__container">
+            <div class="u__content">
+                <form class="u__form" method="post" action="{% url 'login' %}">{% csrf_token %}
+
+                    <div class="u-help">
+                        {% if invalid %}
+                            <span class="invalid">{{ invalid }}</span>
+                        {% endif %}
+                        {% if success %}
+                            <span class="success">{{ success }}</span>
+                        {% endif %}
+                        <div class="u__fields">
+                            <input name="username" type="text" placeholder="Login or Email" class="u__field">
+                            <input name="password" type="password" placeholder="Password" class="u__field">
+                        </div>
+                        <p class="u-text" style="padding: 10px 35px 0 35px; line-height: 20px;">
+                            <a href="{% url 'password_reset' %}">Reset password</a>
+                        </p>
+                    </div>
+                    <input class="u-submit" type="submit" value="Sign in">
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        let inputs = document.getElementsByClassName('u__field')
+        for (let i = 0; i < inputs.length; i++){
+            inputs[i].addEventListener('blur', function (e) {
+                if(inputs[i].value !== ''){
+                    console.log('1')
+                    inputs[i].style.borderColor = '#ff5f6c';
+                }
+                else{
+                    console.log('2')
+                    inputs[i].style.borderColor = 'rgba(244, 247, 245, 0.7)';
+                }
+            })
+        }
+    </script>
+{% endblock %}

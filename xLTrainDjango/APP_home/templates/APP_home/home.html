@@ -1,0 +1,76 @@
+{% extends 'index.html' %}
+{%  load static %}
+{% load sass_tags %}
+
+{% block title %}xlartas{% endblock %}
+
+{% block link_content_css %}
+    <link href="{% sass_src 'home/css/main_home.sass' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+
+{% block content %}
+    {% include 'includes/main_home.html' %}
+
+    {% if registration_fail %}
+        <script>
+            window.addEventListener('load', function(e) {
+                document.getElementsByClassName('menu__burger-btn')[0].click();
+                document.getElementsByClassName('btn_reg')[0].click();
+                document.getElementsByClassName('warning')[0].getElementsByTagName('label')[0].innerHTML =
+                    '<img src="" alt="" class="close-icon-reg-warning" onclick="close_warning();"><p style="padding-top:20px;padding-bottom:20px;" class="warning-title">A user with <span class="warning-var">' +
+                    {% if username_fail %}
+                        '{{ username_fail }}' + '</span> name' +
+                    {% endif %}
+                    {% if email_fail %}
+                        '{{ email_fail }}' + '</span> email' +
+                    {% endif %}
+                    ' already exists</p>';
+                document.getElementsByClassName('warning')[0].style.bottom = '0px';
+                document.getElementsByClassName('close-icon-reg-warning')[0].src = '{% static '/img/close.png' %}';
+            });
+        </script>
+    {% endif %}
+    {% if form_invalid %}
+        <script>
+            window.addEventListener('load', function(e) {
+                document.getElementsByClassName('menu__burger-btn')[0].click();
+                document.getElementsByClassName('btn_reg')[0].click();
+                document.getElementsByClassName('warning')[0].getElementsByTagName('label')[0].innerHTML =
+'<img src="" alt="" class="close-icon-reg-warning" onclick="close_warning();">'+
+'<p style="padding-top:20px;padding-bottom:20px;" class="warning-title">'+
+                    'The fields <span class="warning-var">' +
+                        '{{ form_invalid }}' + '</span> are incorrectly filled in.' +
+                    '</p>' +
+                '<p class="warning-text">'+
+                    {% for i in error_msgs.values %}
+                        '{{ i|escapejs }}<br><br>'+
+                    {% endfor %}
+                '</p>';
+                document.getElementsByClassName('warning')[0].style.bottom = '0px';
+                document.getElementsByClassName('close-icon-reg-warning')[0].src = '{% static '/img/close.png' %}';
+            });
+        </script>
+    {% endif %}
+    {% if captcha_invalid %}
+        <script>
+            window.addEventListener('load', function(e) {
+                document.getElementsByClassName('menu__burger-btn')[0].click();
+                document.getElementsByClassName('btn_reg')[0].click();
+                document.getElementsByClassName('warning')[0].getElementsByTagName('label')[0].innerHTML =
+'<img src="" alt="" class="close-icon-reg-warning" onclick="close_warning();">'+
+'<p style="padding-top:20px;padding-bottom:20px;" class="warning-title">'+
+                    '<span class="warning-var">' +
+                        '{{ captcha_invalid }}' +
+                    '</p>';
+                document.getElementsByClassName('warning')[0].style.bottom = '0px';
+                document.getElementsByClassName('close-icon-reg-warning')[0].src = '{% static '/img/close.png' %}';
+            });
+        </script>
+    {% endif %}
+    <script>
+         window.addEventListener('load', function(e) {
+             document.getElementsByTagName('footer')[0].style.display = 'none';
+         });
+    </script>
+{% endblock %}

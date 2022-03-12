@@ -1,0 +1,32 @@
+<header class="header">
+	<div class="header__container">
+		<a href="{% url 'home' %}" class="header__logo-block">
+			<img src="" class="header__logo">
+		</a>
+
+		<ul class="header__menu">
+			<div class="header__menu-pc">
+                {% if user.is_authenticated %}
+				    <a href="{% url 'profile' %}" class="header__menu-el"><li>{{ user.get_username }} LK</li></a>
+                {% endif %}
+				<a href="{% url 'shop' %}" class="header__menu-el"><li>SHOP</li></a>
+                <a href="{% url 'about' %}" class="header__menu-el"><li>ABOUT</li></a>
+                <a href="{% url 'donate' %}" class="header__menu-el"><li>DONATE</li></a>
+			</div>
+			<ul class="header__login-reg">
+                {% if user.is_authenticated %}
+				    <a href="{% url 'logout' %}" style="display: flex" class="header__login-reg-el btn_log" on><li>Sign out</li></a>
+                {% else %}
+				    <a href="{% url 'login' %}" style="display: flex" class="header__login-reg-el btn_log" on><li>Sign in</li></a>
+				    <div class="header__login-reg-el btn_reg"><li>Register</li></div>
+                {% endif %}
+			</ul>
+		</ul>
+
+		<div class="menu__burger-btn">
+			<span></span>
+			<span></span>
+			<span></span>
+		</div>
+	</div>
+</header>

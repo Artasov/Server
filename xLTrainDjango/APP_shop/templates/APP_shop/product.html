@@ -1,0 +1,66 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}xlartas | PAY{% endblock %}
+
+{% block content %}
+    <div class="u">
+        <div class="u__container">
+            <div class="u__content" style="justify-content: center; gap: 40px;">
+                <div class="u__form" style="overflow-y: scroll; ">
+                    <style>
+                        .u__form::-webkit-scrollbar{
+                            width: 0;
+                        }
+                    </style>
+                    <div class="u-help">
+                        <div class="u__fields" style="padding-top: 40px;">
+                            <div class="__img-block">
+                                {% if name == 'xL Guild Manager' %}
+                                    <img class="-img" src="{% static 'shop/img/xLGM.png' %}" alt="">
+                                {% endif %}
+                                {% if name == 'xLUMRA' %}
+                                    <img class="-img" src="{% static 'shop/img/xLUMRA.png' %}" alt="">
+                                {% endif %}
+                                {% if name == 'xLCracker' %}
+                                    <img class="-img" src="{% static 'shop/img/xLCracker.png' %}" alt="">
+                                {% endif %}
+                            </div>
+                            <p class="u-title" style="text-align: center; line-height: 30px; padding-top: 15px;">{{ name }}<br>
+                                <span class="sub_str1">{{ version }} {{ date_update }}</span></p>
+
+                            <p class="u-text" style="width: 90%; line-height: 1.3em; letter-spacing: 1px;">{{ desc }}</p>
+
+
+                            <iframe width="560" height="315" src="{{ review_ulr }}"
+                                    title="YouTube video player" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen style="max-width: 80vw; max-height: 45vw"></iframe>
+
+                            <form action="{% url 'shop' %}" method="post" class="product__buy-block">{% csrf_token %}
+                                <input type="submit" class="btn-buy" value="Buy">
+                                <div class="price-block">
+                                    <p class="price">{{ price_week }}₽</p>
+                                </div>
+                                <input type="hidden" name="product" value="{{ name }}">
+                            </form>
+
+                            <div style="display:flex; flex-direction: column; justify-content: center; border: 3px solid #ff5f6c; border-radius: 10px; padding: 3% 2% 3% 2%; margin-top: 20px;">
+                                <a href="{% url 'download' distr.name%}" class="u-text" style="display: block; margin: 0 auto;">Скачать {{ name }}</a>
+                            </div>
+
+                            <a href="{% url 'terms_and_conditions' %}" style="font-weight: 600; padding-top: 50px;" class="invalid">Terms
+                                And Conditions</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        window.addEventListener('load', function (e) {
+            document.getElementsByTagName('footer')[0].style.position = 'absolute';
+            document.getElementsByTagName('footer')[0].style.bottom = '0';
+            document.getElementsByTagName('footer')[0].style.left = '1%';
+        });
+    </script>
+{% endblock %}
