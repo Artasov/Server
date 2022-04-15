@@ -43,7 +43,7 @@
             if(document.getElementsByTagName('body')[0].classList.contains('_touch')){
                 el2.setAttribute("data-size", "compact")
             }
-            el2.setAttribute("data-sitekey", "6Lf7QWkeAAAAAJUL-Uso3d9nM2UDahBKTFhPkDfr");
+            el2.setAttribute("data-sitekey", "{{ RECAPTCHA_KEY }}");
             el2.classList.add('g-recaptcha');
             for_insert.before(el);
             for_insert.before(el2);

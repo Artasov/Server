@@ -44,9 +44,9 @@
                                 <input type="hidden" name="product" value="{{ name }}">
                             </form>
 
-                            <div style="display:flex; flex-direction: column; justify-content: center; border: 3px solid #ff5f6c; border-radius: 10px; padding: 3% 2% 3% 2%; margin-top: 20px;">
-                                <a href="{% url 'download' distr.name%}" class="u-text" style="display: block; margin: 0 auto;">Скачать {{ name }}</a>
-                            </div>
+                            {% for distr in distrs %}
+                                <a href="{% url 'download' distr.file%}" class="u-submit" style="color: #999999;">Download {{ distr.file_name }}</a>
+                            {% endfor %}
 
                             <a href="{% url 'terms_and_conditions' %}" style="font-weight: 600; padding-top: 50px;" class="invalid">Terms
                                 And Conditions</a>

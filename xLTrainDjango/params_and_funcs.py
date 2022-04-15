@@ -1,12 +1,13 @@
 import re
+import os
 from datetime import datetime, timedelta
 from django.conf import settings
 from APP_shop.models import Products
 import urllib
 import json
-
+import time
 from xLTrainDjango import settings
-
+from APP_private_msg.models import PrivateMsg
 
 def check_registration_field_correctness(result: dict):
     RFS = {  # Registration Field Setting
@@ -201,3 +202,23 @@ def log(STRING: str):
     with open(path, 'a', encoding='utf-8') as file:
         date = str(datetime.now()) + " "
         file.write(date + STRING + '\n')
+
+
+
+def clearing_private_msg():
+    directory = settings.MEDIA_ROOT + '\\files' + '\\private_msg\\'
+    files = os.listdir(directory)
+    for file in files:
+        if not PrivateMsg.objects.filter(file='files' + '/private_msg/' + file).exists():
+            os.remove(directory + file)
+        else:
+            date_for_del = PrivateMsg.objects.get(file='files' + '/private_msg/' + file).date_for_del
+            date_now = datetime.now()
+            if date_now > date_for_del:
+                os.remove(directory + file)
+                PrivateMsg.objects.get(file='files' + '/private_msg/' + file).delete()
+
+    PrivateMsgs = PrivateMsg.objects.all().values()
+    for msg in PrivateMsgs:
+        if datetime.now() > msg['date_for_del']:
+            PrivateMsg.objects.get(key=msg['key']).delete()

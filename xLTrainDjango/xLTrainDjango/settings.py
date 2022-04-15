@@ -1,3 +1,7 @@
+# params for django templates
+# without_header
+# header_logo_only
+
 import os
 from pathlib import Path
 import environ
@@ -27,6 +31,8 @@ INSTALLED_APPS = [
     'APP_home',
     'APP_shop',
     'APP_task',
+    'APP_api',
+    'APP_private_msg'
 ]
 
 STATICFILES_FINDERS = [
@@ -62,8 +68,16 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
-    ]
+        'rest_framework.renderers.BrowsableAPIRenderer',  # disable browser api
+    ],
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '20/minute',
+        'user': '20/minute'
+    }
 }
 
 REFERRER_POLICY = 'origin'
@@ -142,7 +156,7 @@ LOGIN_REDIRECT_URL = 'home'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 LOGIN_URL = 'home'
 GOOGLE_RECAPTCHA_SECRET_KEY = env('GOOGLE_RECAPTCHA_SECRET_KEY')
-
+GOOGLE_RECAPTCHA_SITE_KEY = env('GOOGLE_RECAPTCHA_SITE_KEY')
 # EMAIL
 # EMAIL_HOST = 'smtp.gmail.com'
 # EMAIL_HOST_USER = env('EMAIL_HOST_USER')

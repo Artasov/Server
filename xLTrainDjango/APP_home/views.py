@@ -1,20 +1,26 @@
 import json
-from datetime import datetime, timedelta
+import os
+from datetime import datetime
 
+import environ
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import make_password
+from django.http import HttpResponseNotFound, HttpResponse
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
 
 from APP_shop import qiwi
 from APP_shop.models import UserLicense
 from params_and_funcs import log, check_registration_field_correctness, EMAIL_validator, reCAPTCHA_validation
 from xLTrainDjango.xLLIB_v1 import random_str, send_EMail
-from .models import User, UnconfirmedUser, UnconfirmedPasswordReset
+from .models import User, UnconfirmedUser, UnconfirmedPasswordReset, Idea
+
+env = environ.Env()
 
 
 def Home(request):
@@ -131,14 +137,25 @@ def Logout(request):
 
 def PasswordReset(request):
     if request.method == "POST":
+
+        # reCAPTCHA
+        result_reCAPTCHA = reCAPTCHA_validation(request)
+        if not result_reCAPTCHA['success']:
+            return render(request, 'registration/password_reset_stage_1.html',
+                          {'captcha_invalid': "Invalid reCAPTCHA. Please try again.",
+                           'RECAPTCHA_KEY': env('GOOGLE_RECAPTCHA_SITE_KEY')})
+
         # CHECKIN FOR VALID EMAIL
         if not EMAIL_validator(request.POST['email']):
-            return render(request, 'registration/password_reset_stage_1.html', context={'invalid': 'Invalid email'})
+            return render(request, 'registration/password_reset_stage_1.html', {'invalid': 'Invalid email',
+                                                                                'RECAPTCHA_KEY': env(
+                                                                                    'GOOGLE_RECAPTCHA_SITE_KEY')})
 
         # CHECKING EMAIL EXISTS
         if not User.objects.filter(email=request.POST['email']).exists():
             return render(request, 'registration/password_reset_stage_1.html',
-                          context={'invalid': 'User with this email does not exists'})
+                          context={'invalid': 'User with this email does not exists',
+                                   'RECAPTCHA_KEY': env('GOOGLE_RECAPTCHA_SITE_KEY')})
 
         # GENERATE CONFIRMATION CODE
         CODE = random_str(40)
@@ -162,7 +179,8 @@ def PasswordReset(request):
         return render(request,
                       'registration/password_reset_stage_2.html')  # Stage 2 - input confirmation CODE and new password
 
-    return render(request, 'registration/password_reset_stage_1.html')
+    return render(request, 'registration/password_reset_stage_1.html',
+                  {'RECAPTCHA_KEY': env('GOOGLE_RECAPTCHA_SITE_KEY')})
 
 
 def PasswordResetConfirmation(request):
@@ -191,10 +209,6 @@ def Profile(request):
         xLGM_remained = int((user_license_.xLGM_date_end - datetime.now()).total_seconds() / 3600)
         xLCracker_remained = int((user_license_.xLCracker_date_end - datetime.now()).total_seconds() / 3600)
 
-        print(xLUMRA_remained)
-        print(xLGM_remained)
-        print(xLCracker_remained)
-
         if xLUMRA_remained > 9600:
             xLUMRA_remained = 'FOREVER'
         elif xLUMRA_remained < 1:
@@ -213,7 +227,7 @@ def Profile(request):
         least_days = {
             'xLUMRA': xLUMRA_remained,
             'xLGM': xLGM_remained,
-            'xLCracker':  xLCracker_remained,
+            'xLCracker': xLCracker_remained,
         }
         return render(request, 'APP_home/profile.html', {'user_license_': user_license_, 'least_days': least_days})
     else:
@@ -254,14 +268,17 @@ def Donate(request):
         try:
             value = int(value)
         except ValueError:
-            return render(request, 'APP_home/donate.html', {'invalid': 'You entered an incorrect value'})
+            return render(request, 'APP_home/donate.html', {'invalid': 'You entered an incorrect value',
+                                                            'RECAPTCHA_KEY': env('GOOGLE_RECAPTCHA_SITE_KEY')})
         if value == 0:
-            return render(request, 'APP_home/donate.html', {'invalid': 'You entered an incorrect value'})
+            return render(request, 'APP_home/donate.html', {'invalid': 'You entered an incorrect value',
+                                                            'RECAPTCHA_KEY': env('GOOGLE_RECAPTCHA_SITE_KEY')})
 
         # reCAPTCHA
         result_reCAPTCHA = reCAPTCHA_validation(request)
         if not result_reCAPTCHA['success']:
-            return render(request, 'APP_home/donate.html', {'invalid': 'Invalid Captcha'})
+            return render(request, 'APP_home/donate.html', {'invalid': 'Invalid Captcha',
+                                                            'RECAPTCHA_KEY': env('GOOGLE_RECAPTCHA_SITE_KEY')})
 
         # GENERATE BILL ID
         billid = random_str(15)
@@ -284,13 +301,16 @@ def Donate(request):
                     'price_month': product.price_month,
                     'price_6_month': product.price_6_month,
                     'price_forever': product.price_forever,
+
                 }
                 return render(request, 'APP_home/donate.html',
-                              {'context': context, 'invalid': 'Error on our side, sorry'})
+                              {'context': context,
+                               'invalid': 'Error on our side, sorry',
+                               'RECAPTCHA_KEY': env('GOOGLE_RECAPTCHA_SITE_KEY')})
         except KeyError:
             pass
         return redirect(response['payUrl'])
-    return render(request, 'APP_home/donate.html')
+    return render(request, 'APP_home/donate.html', {'RECAPTCHA_KEY': env('GOOGLE_RECAPTCHA_SITE_KEY')})
 
 
 def About(request):
@@ -301,10 +321,31 @@ def Resume(request):
     return render(request, 'resume.html', {'name': 'Resume'})
 
 
+def Ideas(request):
+    if not request.user.is_authenticated:
+        return redirect('home')
+
+    if request.method == "POST":
+        # reCAPTCHA
+        result_reCAPTCHA = reCAPTCHA_validation(request)
+        if not result_reCAPTCHA['success']:
+            return render(request, 'ideas.html',
+                          {'captcha_invalid': "Invalid reCAPTCHA. Please try again.",
+                           'RECAPTCHA_KEY': env('GOOGLE_RECAPTCHA_SITE_KEY'),
+                           'idea': request.POST["idea"]})
+
+        Idea.objects.create(username=User.objects.get(username=request.user.username), idea=request.POST['idea']).save()
+        return render(request, 'ideas.html',
+                      context={'success': 'Sent', 'RECAPTCHA_KEY': env('GOOGLE_RECAPTCHA_SITE_KEY')})
+
+    return render(request, 'ideas.html', {'RECAPTCHA_KEY': env('GOOGLE_RECAPTCHA_SITE_KEY')})
+
+
 @csrf_exempt
 @api_view(['POST'])
 def ProgramAuth(request):
     log('+ ProgramAuth START')
+    throttle_classes = [UserRateThrottle, AnonRateThrottle]
     if request.method == "POST":
         log('+ ProgramAuth POST')
         json_date = list(dict(request.POST).keys())[0]
@@ -377,6 +418,7 @@ def ProgramAuth(request):
 @api_view(['POST'])
 def SetHWID(request):
     log(f'+ SetHWID START')
+    throttle_classes = [UserRateThrottle, AnonRateThrottle]
     if request.method == "POST":
         log(f'+ SetHWID POST')
         json_date = list(dict(request.POST).keys())[0]
@@ -407,3 +449,23 @@ def SetHWID(request):
     else:
         log(f'+ SetHWID END something go wrong2')
         return Response({'accept': False, 'ERROR': 'Something go wrong'}, headers={'Content-Type': 'application/json'})
+
+
+def Download(request, path):
+    file_path = os.path.join(settings.MEDIA_ROOT, path)
+
+    delete_bool = 'private' in path
+
+    if os.path.exists(file_path):
+        fh = open(file_path, 'rb')
+        response = HttpResponse(fh.read(), content_type="application/distrs")
+        response['Content-Disposition'] = 'inline;filename=' + os.path.basename(file_path)
+        fh.close()
+
+        if delete_bool:
+            os.remove(file_path)
+            delete_bool = False
+
+        return response
+
+    return render(request, 'NotFound.html')

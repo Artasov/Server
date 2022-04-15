@@ -1,356 +1,538 @@
 @import "adaptiv_mixin"
 =main_bg_color($opacity)
-   background-color: rgba(25, 25, 25, 1) !important
+  background-color: rgba(25, 25, 25, 1) !important
+
+.u_without_padding
+  padding-top: 0px !important
 
 .u
-   padding-top: 80px
-   height: 100%
-   flex: 1 1 auto
-   .u__container
-      // border: 1px solid white
-      margin: 0 auto
-      height: calc(100vh - 80px)
-      max-width: 1100px
+  padding-top: 80px
+  height: 100%
+  flex: 1 1 auto
+
+  .u__container
+    // border: 1px solid white
+    margin: 0 auto
+    height: calc(100vh - 80px)
+    max-width: 1100px
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+
+    .u__content
+      // border: 1px solid red
+      height: 100%
       display: flex
       flex-direction: column
       justify-content: space-around
       align-items: center
-      .u__content
-         // border: 1px solid red
-         height: 100%
-         display: flex
-         flex-direction: column
-         justify-content: space-around
-         align-items: center
-         position: relative
-         width: 100%
-         // +adaptiv-valueByHeight('padding-bottom', 1200, 1200, 500, 350, 0, 3)
-         .u__form
-            //border: 3px solid blue
-            display: flex
-            flex-direction: column
-            justify-content: space-between
-            align-items: center
-            +adaptiv-valueByHeight('gap', 1200, 1200, 390, 110, 0, 3)
-            min-width: 100%
-            
-         .u-help
-            //border: 1px solid violet
-            display: flex
-            flex-direction: column
-            align-items: center
-            gap: 7px
-            min-width: 100%
-            max-width: 100%
+      position: relative
+      width: 100%
+      // +adaptiv-valueByHeight('padding-bottom', 1200, 1200, 500, 350, 0, 3)
+      .u__form
+        //border: 3px solid blue
+        display: flex
+        flex-direction: column
+        justify-content: space-between
+        align-items: center
+        +adaptiv-valueByHeight('gap', 1200, 1200, 390, 110, 0, 3)
+        min-width: 100%
 
-            .u__fields
-               //border: 1px solid green
-               display: flex
-               flex-direction: column
-               justify-content: space-between
-               align-items: center
-               max-width: 100vw
-               gap: 20px
-               .u__field
-                  transition: all 150ms ease
-                  margin: 0 auto
-                  position: relative
-                  width: 70%
-                  max-width: 400px
-                  height: 100%
-                  min-height: 45px
-                  max-height: 70px
-                  +main_bg_color(1)
-                  +adaptiv-valueByHeight('height', 1200, 1200, 600, 110, 60, 3)
-                  +adaptive-font(27, 19, 1100)
-                  border: 2px solid rgba(244, 247, 245, 0.7)
-                  border-radius: 10px
-                  color: #f5f5f5
-                  padding-left: 18px
-                  display: flex
-                  flex-direction: column
-                  justify-content: center
-                  &:focus
-                     border: 2px solid #ff5f6c !important
-                  .u__field-in
-                     color: #f5f5f5
-                     +adaptive-font(27, 19, 1100)
-                     text-align: center
-                     background: rgba(0, 0, 0, 0)
-                  form
-                     position: relative
-                     height: 100%
-                     width: 100%
-                     display: flex
-                     flex-direction: column
-                     justify-content: center
-               .u__field-sub
-                  //border: 1px solid red
-                  position: absolute
-                  height: 25px
-                  width: 100%
-                  left: 0
-                  top: -25%
-                  display: flex
-                  justify-content: center
-                  span
-                     margin: 0 auto
-                     letter-spacing: 4px
-                     font-weight: 400
-                     text-align: right
-                     padding: 0 0.6em
-                     background-color: rgba(25, 25, 25, 1)
-                     +adaptive-font(25, 18, 1100)
-               .u__field-radio
-                  transition: all 200ms ease
-                  margin: 0 auto
-                  position: relative
-                  width: 80%
-                  height: 100%
-                  min-height: 45px
-                  max-height: 80px
-                  +main_bg_color(1)
-                  +adaptiv-valueByHeight('height', 1200, 1200, 600, 80, 45, 3)
-                  border: 2px solid rgba(244, 247, 245, 0.7)
-                  border-radius: 10px
-                  display: grid
-                  grid-template: 1fr / 0.65fr 0.35fr
-                  .radio-name
-                     border-top-left-radius: 7px
-                     border-bottom-left-radius: 7px
-                     //border: 1px solid red
-                     height: 100%
-                     width: 100%
-                     transition: all 200ms ease
-                     +adaptive-font(30, 23, 1100)
-                     font-weight: 500
-                     letter-spacing: 1px
-                     color: #aaaaaa
-                     display: flex
-                     flex-direction: column
-                     justify-content: center
-                     background: rgba(255, 255, 255, 0)
-                     span
-                        margin: 0 auto
-                  .radio-price
-                     border-top-right-radius: 7px
-                     border-bottom-right-radius: 7px
-                     //border: 1px solid red
-                     height: 100%
-                     width: 100%
-                     transition: all 200ms ease
-                     +adaptive-font(30, 23, 1100)
-                     font-weight: 500
-                     letter-spacing: 1px
-                     color: #ff4d5c
-                     display: flex
-                     flex-direction: column
-                     justify-content: center
-                     background: rgba(255, 255, 255, 0)
-                     span
-                        margin: 0 auto
-         .u-submit
-            transition: all 200ms ease
-            background: rgba(248, 248, 248, 0.13)
-            border-radius: 18px
-            +adaptive-font(26, 17, 1100)
-            font-weight: 500
-            padding: 0.9em 1.4em
-            margin-top: 5px
+      .u-help
+        //border: 1px solid violet
+        display: flex
+        flex-direction: column
+        align-items: center
+        gap: 7px
+        min-width: 100%
+        max-width: 100%
+
+        &
+
+        .u__fields
+          //border: 1px solid green
+          display: flex
+          flex-direction: column
+          justify-content: space-between
+          align-items: center
+          max-width: 100vw
+          gap: 20px
+
+          .u__field
+            transition: all 150ms ease
+            margin: 0 auto
+            position: relative
+            width: 70%
+            max-width: 400px
+            height: 100%
+            min-height: 45px
+            max-height: 70px
+            +main_bg_color(1)
+            +adaptiv-valueByHeight('height', 1200, 1200, 600, 110, 60, 3)
+            +adaptive-font(27, 19, 1100)
+            border: 2px solid rgba(244, 247, 245, 0.7)
+            border-radius: 10px
             color: #f5f5f5
-            letter-spacing: 1px
-            &:hover
-               background: #ff5f6c
-               transform: scale(1.1)
+            padding-left: 18px
+            display: flex
+            flex-direction: column
+            justify-content: center
+
+            &:focus
+              border: 2px solid #ff5f6c !important
+
+            .u__field-in
+              color: #f5f5f5
+              +adaptive-font(27, 19, 1100)
+              text-align: center
+              background: rgba(0, 0, 0, 0)
+
+            form
+              position: relative
+              height: 100%
+              width: 100%
+              display: flex
+              flex-direction: column
+              justify-content: center
+
+          .u__field-sub
+            //border: 1px solid red
+            position: absolute
+            height: 25px
+            width: 100%
+            left: 0
+            top: -25%
+            display: flex
+            justify-content: center
+
+            span
+              margin: 0 auto
+              letter-spacing: 4px
+              font-weight: 400
+              text-align: right
+              padding: 0 0.6em
+              background-color: rgba(25, 25, 25, 1)
+              +adaptive-font(25, 18, 1100)
+
+          .u__field-radio
+            transition: all 200ms ease
+            margin: 0 auto
+            position: relative
+            width: 80%
+            height: 100%
+            min-height: 45px
+            max-height: 80px
+            +main_bg_color(1)
+            +adaptiv-valueByHeight('height', 1200, 1200, 600, 80, 45, 3)
+            border: 2px solid rgba(244, 247, 245, 0.7)
+            border-radius: 10px
+            display: grid
+            grid-template: 1fr / 0.65fr 0.35fr
+
+            .radio-name
+              border-top-left-radius: 7px
+              border-bottom-left-radius: 7px
+              //border: 1px solid red
+              height: 100%
+              width: 100%
+              transition: all 200ms ease
+              +adaptive-font(30, 23, 1100)
+              font-weight: 500
+              letter-spacing: 1px
+              color: #aaaaaa
+              display: flex
+              flex-direction: column
+              justify-content: center
+              background: rgba(255, 255, 255, 0)
+
+              span
+                margin: 0 auto
+
+            .radio-price
+              border-top-right-radius: 7px
+              border-bottom-right-radius: 7px
+              //border: 1px solid red
+              height: 100%
+              width: 100%
+              transition: all 200ms ease
+              +adaptive-font(30, 23, 1100)
+              font-weight: 500
+              letter-spacing: 1px
+              color: #ff4d5c
+              display: flex
+              flex-direction: column
+              justify-content: center
+              background: rgba(255, 255, 255, 0)
+
+              span
+                margin: 0 auto
 
 .invalid
-   max-width: 90%
-   text-align: center
-   color: #ff5f6c
-   +adaptive-font(23, 19, 1100)
-   padding-bottom: 17px
+  max-width: 90%
+  text-align: center
+  color: #ff5f6c
+  +adaptive-font(23, 19, 1100)
+  padding-bottom: 17px
 
 .success
-   max-width: 90%
-   text-align: center
-   color: #5fff5f
-   +adaptive-font(23, 19, 1100)
-   padding-bottom: 17px
+  max-width: 90%
+  text-align: center
+  color: #5fff5f
+  +adaptive-font(23, 19, 1100)
+  padding-bottom: 17px
 
 .u-h1
-   color: #f5f5f5 !important
-   +adaptive-font(35, 26, 1100)
+  color: #f5f5f5 !important
+  +adaptive-font(35, 26, 1100)
+
+.u-submit
+  transition: all 300ms ease
+  background: rgba(248, 248, 248, 0.13)
+  border-radius: 18px
+  +adaptive-font(26, 17, 1100)
+  font-weight: 500
+  padding: 0.9em 1.4em
+  margin-top: 5px
+  color: #f5f5f5
+  letter-spacing: 1px
+
+  &:hover
+    background: #ff5f6c
+    color: #f5f5f5 !important
+    transform: scale(1.05)
 
 .u-submit2
-   transition: all 200ms ease
-   background: rgba(248, 248, 248, 0.13)
-   border-radius: 18px
-   +adaptive-font(26, 17, 1100)
-   font-weight: 500
-   padding: 0.9em 1.4em
-   margin-top: 5px
-   color: #f5f5f5
-   letter-spacing: 1px
-   &:hover
-      background-color: #ff5f6c
-      color: #191919
-      transform: scale(1.1)
+  transition: all 300ms ease
+  background: rgba(248, 248, 248, 0.13)
+  border-radius: 18px
+  +adaptive-font(26, 17, 1100)
+  font-weight: 500
+  padding: 0.9em 1.4em
+  margin-top: 5px
+  color: #f5f5f5
+  letter-spacing: 1px
+
+  &:hover
+    background-color: #ff5f6c
+    color: #191919
+    transform: scale(1.05)
 
 .u-title
-   color: #f5f5f5
-   +adaptive-font(45, 30, 1100)
-
-
+  color: #f5f5f5
+  +adaptive-font(45, 30, 1100)
 
 .u-text2
-   color: #777777
-   +adaptive-font(17, 14, 1100)
+  color: #777777
+  +adaptive-font(17, 14, 1100)
 
 .u-text3
-   +adaptive-font(35, 25, 1100)
+  +adaptive-font(35, 25, 1100)
 
 .u-text
-   width: 100%
-   +adaptive-font(23, 16, 1100)
-   color: #aaaaaa
-   text-align: center
-   a
-      display: block
-      color: #988bad
-      +adaptive-font(23, 16, 1100)
+  width: 100%
+  +adaptive-font(23, 16, 1100)
+  color: #aaaaaa
+  text-align: center
 
+  a
+    display: block
+    color: #988bad
+    +adaptive-font(23, 16, 1100)
+
+.u-text4
+  width: 100%
+  +adaptive-font(20, 17, 1100)
+  color: #f4f4f4
+  text-align: center
+  white-space: nowrap
+
+  a
+    display: block
+    color: #f5f5f5
+    +adaptive-font(20, 17, 1100)
 .u__field-radio-active
-   border: 0px solid rgba(255, 95, 108, 0) !important
-   .radio-name
-      color: #191919 !important
-      background: #f5f5f5 !important
-   .radio-price
-      color: #191919 !important
-      background: #ff5f6c !important
+  border: 0px solid rgba(255, 95, 108, 0) !important
+
+  .radio-name
+    color: #191919 !important
+    background: #f5f5f5 !important
+
+  .radio-price
+    color: #191919 !important
+    background: #ff5f6c !important
 
 .warr-text
-   +adaptive-font(23, 16, 1100)
-   color: #ff5f6c
+  +adaptive-font(23, 16, 1100)
+  color: #ff5f6c
 
 .btn-save-field
-   transition: all 200ms ease
-   opacity: 0
-   //position: absolute
-   //left: 0
-   //top: 0
-   height: 100%
-   font-weight: 600
-   display: none
-   flex-direction: column
-   justify-content: center
-   img
-      //border: 1px solid white
-      transition: all 200ms ease
-      height: 60%
-      filter: invert(1)
-      &:hover
-         transform: scale(1.2)
+  transition: all 200ms ease
+  opacity: 0
+  //position: absolute
+  //left: 0
+  //top: 0
+  height: 100%
+  font-weight: 600
+  display: none
+  flex-direction: column
+  justify-content: center
+
+  img
+    //border: 1px solid white
+    transition: all 200ms ease
+    height: 60%
+    filter: invert(1)
+
+    &:hover
+      transform: scale(1.2)
+
+
+.img_field
+  transition: all 450ms ease
+  margin: 0 auto
+  display: flex
+  flex-direction: column
+  justify-content: center
+
+._pc
+  .img_field
+    width: 60%
+
+._touch
+  .img_field
+    width: 90%
 
 .btn-save-field-active
-   //border: 1px solid red
-   opacity: 100% !important
-   //position: absolute
-   //top: 0
-   //left: 0
-   display: flex
-   flex-direction: column
-   justify-content: center
-   img
-      //border: 1px solid white
-      transition: all 200ms ease
-      height: 60%
-      filter: invert(1)
-      &:hover
-         transform: scale(1.2)
+  //border: 1px solid red
+  opacity: 100% !important
+  //position: absolute
+  //top: 0
+  //left: 0
+  display: flex
+  flex-direction: column
+  justify-content: center
+
+  img
+    //border: 1px solid white
+    transition: all 200ms ease
+    height: 60%
+    filter: invert(1)
+
+    &:hover
+      transform: scale(1.2)
+
 .no_scrollbar
-   &::-webkit-scrollbar 
-      width: 0
+  &::-webkit-scrollbar
+    width: 0
+
+.hover1
+  &:hover
+    transform: scale(1.05)
+    cursor: pointer
 
 .g-recaptcha
-   filter: invert(0.92) hue-rotate(170deg)
+  filter: invert(0.92) hue-rotate(172deg)
+
+//iframe[title=reCAPTCHA]
+//  width: 174px
+//  height: 154px
 
 ._pc
-   .__img-block
-      display: flex
-      flex-direction: column
-      justify-content: center
-      .-img
-         margin: 0 auto
-         width: 30%
+  .__img-block
+    display: flex
+    flex-direction: column
+    justify-content: center
+
+    .-img
+      margin: 0 auto
+      width: 30%
 
 ._touch
-   .__img-block
-      display: flex
-      flex-direction: column
-      justify-content: center
-      .-img
-         margin: 0 auto
-         width: 70%
+  .__img-block
+    display: flex
+    flex-direction: column
+    justify-content: center
+
+    .-img
+      margin: 0 auto
+      width: 70%
 
 .sub_str1
-   color: #666666
-   text-align: center
-   +adaptive-font(17, 14, 1100)
+  color: #666666
+  text-align: center
+  +adaptive-font(17, 14, 1100)
 
 .product__buy-block
-   +adaptiv-value('padding-top', 1100, 1920, 25, 15, 3)
-   +adaptiv-value('padding-bottom', 1100, 1920, 25, 15, 3)
-   width: 100%
-   display: flex
-   justify-content: center
-   .btn-buy
-      border-bottom-left-radius: 20px
-      +adaptiv-value('padding-top', 1100, 1920, 20, 10, 3)
-      +adaptiv-value('padding-bottom', 1100, 1920, 20, 10, 3)
-      +adaptiv-value('padding-left', 1100, 1920, 45, 30, 3)
-      +adaptiv-value('padding-right', 1100, 1920, 45, 30, 3)
+  +adaptiv-value('padding-top', 1100, 1920, 25, 15, 3)
+  +adaptiv-value('padding-bottom', 1100, 1920, 25, 15, 3)
+  width: 100%
+  display: flex
+  justify-content: center
+
+  .btn-buy
+    border-bottom-left-radius: 20px
+    +adaptiv-value('padding-top', 1100, 1920, 20, 10, 3)
+    +adaptiv-value('padding-bottom', 1100, 1920, 20, 10, 3)
+    +adaptiv-value('padding-left', 1100, 1920, 45, 30, 3)
+    +adaptiv-value('padding-right', 1100, 1920, 45, 30, 3)
+    color: #191919
+    font-weight: 600
+    background-color: #cccccc
+    +adaptive-font(25, 20, 1100)
+
+  .price-block
+    border-top-right-radius: 20px
+    +adaptiv-value('padding-top', 1100, 1920, 15, 10, 3)
+    +adaptiv-value('padding-bottom', 1100, 1920, 15, 10, 3)
+    +adaptiv-value('padding-left', 1100, 1920, 45, 25, 3)
+    +adaptiv-value('padding-right', 1100, 1920, 45, 25, 3)
+    background-color: #ff5f6c
+    display: flex
+    flex-direction: column
+    justify-content: center
+
+    .price
       color: #191919
       font-weight: 600
-      background-color: #cccccc
       +adaptive-font(25, 20, 1100)
-   .price-block
-      border-top-right-radius: 20px
-      +adaptiv-value('padding-top', 1100, 1920, 15, 10, 3)
-      +adaptiv-value('padding-bottom', 1100, 1920, 15, 10, 3)
-      +adaptiv-value('padding-left', 1100, 1920, 45, 25, 3)
-      +adaptiv-value('padding-right', 1100, 1920, 45, 25, 3)
-      background-color: #ff5f6c
-      display: flex
-      flex-direction: column
-      justify-content: center
-      .price
-         color: #191919
-         font-weight: 600
-         +adaptive-font(25, 20, 1100)
 
 .hide_scroll
-   &::-webkit-scrollbar
-      width: 0
+  &::-webkit-scrollbar
+    width: 0
 
 ._pc
-   .adaptive-width60
-      width: 60%
+  .adaptive-width60
+    width: 60%
+
 ._touch
-   .adaptive-width60
-      width: 90%
-      text-align: center
+  .adaptive-width60
+    width: 90%
+    text-align: center
 
 .u__field-line
-   //border: 2px solid red
-   width: 90%
-   height: 100%
-   display: grid
-   grid-template: 1fr / 1fr 1.7fr
-   position: relative
+  //border: 2px solid red
+  width: 90%
+  height: 100%
+  display: grid
+  grid-template: 1fr / 1fr 1.7fr
+  position: relative
 
 .mid-btn
-   display: flex
-   flex-direction: column
-   justify-content: center
-   +main_bg_color(1)
-   +adaptive-font(27, 19, 1100)
+  display: flex
+  flex-direction: column
+  justify-content: center
+  +main_bg_color(1)
+  +adaptive-font(27, 19, 1100)
+
+.u-combobox1
+  +main_bg_color(1)
+  +adaptive-font(22, 16, 1100)
+  border: 2px solid #ff5f6c
+  border-radius: 10px
+  color: #aaaaaa
+  position: relative
+  appearance: none
+  padding: 0.3em 1.8em 0.3em 1em
+
+  &::-webkit-scrollbar
+    width: 0
+
+
+.wrap_word
+  word-wrap: break-word
+
+.u-arrow1
+  display: block
+  border-style: solid
+  border-width: 6px 5px 0 5px
+  border-color: #aaaaaa transparent transparent transparent
+  pointer-events: none
+  position: absolute
+  top: 50%
+  right: 1.3rem
+  z-index: 1
+  margin-top: -3px
+
+.audio_recorder
+  display: flex
+  justify-content: center
+  max-width: 80%
+  gap: 1em
+  padding: 0.5em 2em
+  border-radius: 1em
+  background-color: #333333
+
+  .audio_recorder-btn
+    position: relative
+    display: flex
+    flex-direction: column
+    justify-content: center
+    width: 2em
+    height: 2em
+
+    #start_record
+      transition: all 200ms ease
+      position: absolute
+      top: 0
+      left: 0
+      width: 2em
+      height: 2em
+      background: #f5f5f5
+      border: 0.6em solid #ff5f6c
+      border-radius: 1em
+
+    #end_record
+      transition: all 200ms ease
+      position: absolute
+      top: 0
+      left: 0
+      width: 2em
+      height: 2em
+      background: #f5f5f5
+      border: 0.6em solid #825fff
+      border-radius: 1em
+      opacity: 0
+      pointer-events: none
+
+  .audio_recorder-play-stop-btns
+    position: relative
+    flex-direction: column
+    justify-content: center
+    width: 2em
+    height: 2em
+    display: none
+
+    #start_audio
+      transition: all 200ms ease
+      position: absolute
+      top: 0
+      left: 0
+      width: 2em
+      height: 2em
+      background: #14a119
+      border-radius: 1em
+      .triangle
+        position: absolute
+        top: 0.5em
+        left: 0.815em
+        border: 0.5em solid transparent
+        border-left: 0.55em solid white
+    #end_audio
+      transition: all 200ms ease
+      position: absolute
+      top: 0
+      left: 0
+      width: 2em
+      height: 2em
+      background: #1a1a1a
+      border-radius: 1em
+      opacity: 0
+      pointer-events: none
+      .square
+        position: absolute
+        top: 0.65em
+        left: 0.65em
+        width: 0.7em
+        height: 0.7em
+        background: #f5f5f5

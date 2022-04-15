@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import User, UnconfirmedUser, UnconfirmedPasswordReset
+from .models import User, UnconfirmedUser, UnconfirmedPasswordReset, File, Idea
 
 
 # Register your models here.
@@ -19,3 +19,15 @@ class UnconfirmedUserAdmin(admin.ModelAdmin):
 @admin.register(UnconfirmedPasswordReset)
 class UnconfirmedPasswordResetAdmin(admin.ModelAdmin):
     list_display = ['email', 'CODE', 'date']
+
+
+@admin.register(File)
+class FileAdmin(admin.ModelAdmin):
+    list_display = ['file_name', 'file']
+    list_editable = ['file']
+
+
+@admin.register(Idea)
+class IdeaAdmin(admin.ModelAdmin):
+    list_display = ['username', 'idea', 'date']
+    list_editable = ['idea', 'date']

@@ -1,5 +1,6 @@
 import os
 
+import environ
 from django.conf import settings
 from django.http import HttpResponseNotFound, HttpResponse
 from django.shortcuts import render, redirect
@@ -10,6 +11,8 @@ from params_and_funcs import set_license, get_price
 from xLTrainDjango.xLLIB_v1 import random_str
 from . import qiwi
 from .models import Products, UserLicense
+
+env = environ.Env()
 
 
 def Shop(request):
@@ -38,6 +41,7 @@ def Shop(request):
             'price_month': product.price_month,
             'price_6_month': product.price_6_month,
             'price_forever': product.price_forever,
+            'RECAPTCHA_KEY': env('GOOGLE_RECAPTCHA_SITE_KEY'),
         }
         return render(request, 'APP_shop/buy.html', {'context': context})
 
@@ -68,6 +72,7 @@ def Buy(request):
                 'price_6_month': product.price_6_month,
                 'price_forever': product.price_forever,
                 'captcha_invalid': "Invalid reCAPTCHA. Please try again.",
+                'RECAPTCHA_KEY': env('GOOGLE_RECAPTCHA_SITE_KEY')
             }
             return render(request, 'APP_shop/buy.html', {'context': context})
 
@@ -95,13 +100,13 @@ def Buy(request):
         try:
             if response['errorCode']:
                 product = Products.objects.get(name=product)
-                print(response)
                 context = {
                     'name': product.name,
                     'price_week': product.price_week,
                     'price_month': product.price_month,
                     'price_6_month': product.price_6_month,
                     'price_forever': product.price_forever,
+                    'RECAPTCHA_KEY': env('GOOGLE_RECAPTCHA_SITE_KEY')
                 }
                 return render(request, 'APP_shop/buy.html',
                               {'context': context, 'invalid': 'Error on our side, sorry'})
@@ -156,6 +161,7 @@ def Product(request):
         product_ = Products.objects.get(name='xLCracker')
     else:
         return HttpResponseNotFound('WTF')
+
     return render(request, 'APP_shop/product.html', context={
         'name': product_.name,
         'desc': product_.desc,
@@ -163,15 +169,8 @@ def Product(request):
         'date_update': product_.date_update,
         'version': product_.version,
         'review_ulr': product_.review_ulr,
-        'distr': product_.distr
+        'distrs': product_.distrs.all()
     })
 
 
-def download(request, path):
-    file_path = os.path.join(settings.MEDIA_ROOT, path)
-    if os.path.exists(file_path):
-        with open(file_path, 'rb') as fh:
-            response = HttpResponse(fh.read(), content_type="application/distr")
-            response['Content-Disposition'] = 'inline;filename=' + os.path.basename(file_path)
-            return response
-    raise HttpResponseNotFound
+

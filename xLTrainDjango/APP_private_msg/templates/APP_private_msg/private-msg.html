@@ -1,0 +1,361 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}xlartas | PRIVATE{% endblock %}
+
+{% block content %}
+    <div class="u">
+        <div class="u__container">
+            <div class="u__content" style="justify-content: center; gap: 40px;">
+                <div class="u__form no_scrollbar" style="overflow-y: scroll">
+                    <div class="u-help" style="">
+                        <div class="u__fields " style="width: 100%;">
+                            <p class="u-title">PRIVATE MSG</p>
+                            {% if captcha_invalid %}
+                                <span class="invalid" style="padding: 0; margin: 0;">{{ captcha_invalid }}</span>
+                            {% endif %}
+                            {% if success %}
+                                <span class="success">{{ success }}</span>
+                            {% endif %}
+
+
+
+
+                            {% if pre_read %}
+                                <div class="u__form">
+                                    <div class="u__fields">
+                                        <a href="{% url 'private-msg-read' key %}" class="u-submit2"
+                                           style="margin-bottom: 10px;">Click for read</a>
+                                    </div>
+                                </div>
+
+
+
+
+                            {% elif read %}
+                                <p class="u-text" style="max-width: 600px; padding: 0 1em; line-height: 1.2em;">
+                                    Reading...
+                                </p>
+                                <div class="u__form">
+                                    <div class="u__fields">
+                                        {% if msg != '' %}
+                                            <label>
+                                        <textarea readonly class="u__field no_scrollbar" rows="80" cols="80" style="
+                                        min-width: 90%;
+                                        max-width: 600px;
+                                        min-height: 150px;
+                                        padding: 1em;">{{ msg }}</textarea>
+                                            </label>
+                                        {% endif %}
+                                        {% if img %}
+                                            <a href="{{ img }}" target="_blank">
+                                                <img src="{{ img }}" alt="" class="img_field hover1 private_img"
+                                                     style="">
+                                            </a>
+                                        {% endif %}
+                                        {#VOICE#}
+                                        {% if voice_msg %}
+                                            <audio controls="controls" id="player" style="display: none;">
+                                                <source src="{{ voice_msg }}" type="audio/ogg">
+                                                Your browser does not support the audio element.
+                                            </audio>
+                                            <div class="audio_recorder" style="background-color: #323232">
+                                                <div style="display: flex; flex-direction: column; justify-content: center;">
+                                                    <p class="u-text4" style="transform: translateY(-0.05em)">Voice
+                                                        msg</p>
+                                                </div>
+                                                <div class="audio_recorder-play-stop-btns" style="display: flex;">
+                                                    <div id="start_audio">
+                                                        <div class="triangle"></div>
+                                                    </div>
+                                                    <div id="end_audio" style="">
+                                                        <div class="square"></div>
+                                                    </div>
+                                                </div>
+                                                <p class="u-text" style="display: none;"></p>
+                                                <div id="player" style="display: none;"></div>
+                                            </div>
+                                        {% endif %}
+
+                                        {% if file %}
+                                            <a href="{% url 'download' file %}" class="u-submit2">Download file</a>
+                                        {% endif %}
+                                        <a href="{% url 'private-msg' %}" class="u-submit" style="margin-bottom: 10px;">Create
+                                            new</a>
+                                    </div>
+                                </div>
+
+
+                            {% elif link %}
+                                <span class="success copied" style="display: none;">Copied</span>
+                                <p class="u-text" style="max-width: 600px; padding: 0 1em; line-height: 1.2em;">
+                                    Link to read
+                                </p>
+                                <div class="u__form" method="post" action="{% url 'private-msg' %}">{% csrf_token %}
+                                    <div class="u__fields">
+                                        <p class="u-text link_for_copy"
+                                           style="user-select: text; max-width: 40%; word-wrap:break-word;">
+                                            {{ link }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <button class="u-submit2 copy_link">COPY</button>
+                                <a href="{% url 'private-msg' %}" class="u-submit" style="margin-bottom: 10px;">Create
+                                    new</a>
+
+
+                            {% elif not_exist %}
+                                <div class="u__form" method="post" action="{% url 'private-msg' %}">{% csrf_token %}
+                                    <div class="u__fields">
+                                        <p class="u-text">{{ not_exist }}</p>
+                                    </div>
+                                </div>
+                                <a href="{% url 'private-msg' %}" class="u-submit" style="margin-bottom: 10px;">Create
+                                    new</a>
+
+
+                            {% elif create %}
+                                <p class="u-text" style="max-width: 600px; padding: 0 1em; line-height: 1.2em;">
+                                    Write a message and click encrypt. You will be given a one-time link to read the
+                                    message. After reading, the message will be deleted.
+                                </p>
+                                <span id="size_warr" class="invalid" style="padding: 0; margin: 0; display: none;">
+                                    File is too big!
+                                </span>
+                                {% if invalid %}
+                                    <span class="invalid" style="padding: 0; margin: 0;">
+                                        {{ invalid }}
+                                    </span>
+                                {% endif %}
+                                <form class="u__form" method="post" enctype="multipart/form-data"
+                                      action="{% url 'private-msg' %}">{% csrf_token %}
+                                    <div class="u__fields">
+                                        <label>
+                                            <textarea class="u__field no_scrollbar" name="msg" rows="80" cols="80"
+                                                      style=
+                                                              "
+                                            min-width: 90%;
+                                            max-width: 600px;
+                                            min-height: 150px;
+                                            padding: 1em;
+                                            ">{{ msg }}</textarea>
+                                        </label>
+
+                                        <p class="u-submit2 btn_add_file" style="padding: 0.6em 1.2em 0.6em 1em">+
+                                            File</p>
+                                        <input style="display: none" type="file" name="file" value="" id="file">
+
+                                        <input type="file" id="audio_input" name="voice_msg" style="display: none;">
+                                        <div class="audio_recorder">
+                                            <div style="display: flex; flex-direction: column; justify-content: center;">
+                                                <p class="u-text4" style="transform: translateY(-0.05em)">Voice msg</p>
+                                            </div>
+                                            <div class="audio_recorder-btn">
+                                                <div id="start_record"></div>
+                                                <div id="end_record"></div>
+                                            </div>
+                                            <div class="audio_recorder-play-stop-btns">
+                                                <div id="start_audio">
+                                                    <div class="triangle"></div>
+                                                </div>
+                                                <div id="end_audio" style="">
+                                                    <div class="square"></div>
+                                                </div>
+                                            </div>
+                                            <p class="u-text" style="display: none;"></p>
+                                            <div id="player" style="display: none;"></div>
+                                        </div>
+
+
+                                        <div style="position: relative;">
+                                            <select class="u-combobox1" name="delete_in_time"
+                                                    id="msg-life-range-select">
+                                                <option class="u-combobox1-el" value="15 sec">15 sec</option>
+                                                <option class="u-combobox1-el" value="30 sec">30 sec</option>
+                                                <option class="u-combobox1-el" value="1 min">1 min</option>
+                                                <option class="u-combobox1-el" value="2 min">2 min</option>
+                                                <option class="u-combobox1-el" value="5 min">5 min</option>
+                                                <option class="u-combobox1-el" value="10 min">10 min</option>
+                                                <option class="u-combobox1-el" value="15 min">15 min</option>
+                                                <option class="u-combobox1-el" value="20 min">20 min</option>
+                                                <option class="u-combobox1-el" value="30 min">30 min</option>
+                                                <option class="u-combobox1-el" value="1 hour">1 hour</option>
+                                                <option class="u-combobox1-el" value="2 hour">2 hour</option>
+                                                <option class="u-combobox1-el" value="3 hour">3 hour</option>
+                                                <option class="u-combobox1-el" value="5 hour">5 hour</option>
+                                                <option class="u-combobox1-el" value="10 hour">10 hour</option>
+                                                <option class="u-combobox1-el" value="15 hour">15 hour</option>
+                                                <option class="u-combobox1-el" selected value="1 day">1 day</option>
+                                                <option class="u-combobox1-el" value="2 day">2 day</option>
+                                                <option class="u-combobox1-el" value="3 day">3 day</option>
+                                                <option class="u-combobox1-el" value="4 day">4 day</option>
+                                                <option class="u-combobox1-el" value="5 day">5 day</option>
+                                                <option class="u-combobox1-el" value="7 day">7 day</option>
+                                            </select>
+                                            <div class="u-arrow1"></div>
+                                        </div>
+
+                                        <input class="u-submit2 captcha" type="submit" value="Encrypt"
+                                               style="margin: 0 0 10px 0 !important;">
+                                    </div>
+                                </form>
+                            {% endif %}
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        {% if link %}
+            let copy_btn = document.getElementsByClassName('copy_link')[0];
+            copy_btn.addEventListener('click', function (e) {
+                navigator.clipboard.writeText(document.getElementsByClassName('link_for_copy')[0].innerHTML);
+                document.getElementsByClassName('copied')[0].style.display = 'inline';
+            })
+        {% endif %}
+        let inputs = document.getElementsByClassName('u__field');
+        for (let i = 0; i < inputs.length; i++) {
+            inputs[i].addEventListener('blur', function (e) {
+                if (inputs[i].value !== '') {
+                    inputs[i].style.borderColor = '#ff5f6c';
+                } else {
+                    inputs[i].style.borderColor = 'rgba(244, 247, 245, 0.7)';
+                }
+            })
+        }
+        {% if not read and not link and not not_exist%}
+
+            // limiting upload
+            var uploadField = document.getElementById("file");
+
+            uploadField.onchange = function () {
+                if (this.files[0].size > 30 * 1024 * 1024) {//5MB
+                    document.getElementById('size_warr').style.display = 'block';
+                    this.value = "";
+
+                } else {
+                    document.getElementById('size_warr').style.display = 'none';
+                    document.getElementsByClassName('btn_add_file')[0].innerHTML = this.files[0].name
+                }
+            };
+            //
+            document.getElementsByClassName('btn_add_file')[0].addEventListener('click', function () {
+                uploadField.click();
+            })
+            window.addEventListener('load', function (e) {
+                var for_insert = document.getElementsByClassName('captcha')[0];
+                var el = document.createElement('script');
+                el.setAttribute('src', 'https://www.google.com/recaptcha/api.js');
+                var el2 = document.createElement('div');
+                if (document.getElementsByTagName('body')[0].classList.contains('_touch')) {
+                    el2.setAttribute("data-size", "normal")
+                }
+                el2.setAttribute("data-sitekey", "{{ RECAPTCHA_KEY }}");
+                el2.classList.add('g-recaptcha');
+                for_insert.before(el);
+                for_insert.before(el2);
+            });
+        {% endif %}
+    </script>
+    {#  hide footer  #}
+    <script>
+        window.addEventListener('load', function (e) {
+            document.getElementsByTagName('footer')[0].style.display = 'none';
+        });
+    </script>
+    {#  audio  #}
+    <script type="text/javascript">
+        var start_record = document.getElementById('start_record');
+        var end_record = document.getElementById('end_record');
+        var player = document.getElementById('player');
+        var audio_recorder_play_stop_btns = document.getElementsByClassName('audio_recorder-play-stop-btns')[0]
+        if (start_record != null && end_record != null) {
+            start_record.onclick = () => {
+
+                start_record.style.pointerEvents = 'none';
+                start_record.style.opacity = '0%';
+                end_record.style.pointerEvents = 'all';
+                end_record.style.opacity = '100%';
+                audio_recorder_play_stop_btns.style.display = 'none';
+
+                navigator.mediaDevices.getUserMedia({audio: true})
+                    .then(stream => {
+                        mediaRecorder = new MediaRecorder(stream);
+                        mediaRecorder.start();
+                        chuck = [];
+
+                        mediaRecorder.addEventListener('dataavailable', e => {
+                            chuck.push(e.data)
+                        })
+
+                        mediaRecorder.addEventListener('stop', e => {
+                            blob = new Blob(chuck, {type: 'audio/ogg'});
+                            audio_url = URL.createObjectURL(blob);
+                            audio = new Audio(audio_url);
+                            audio.setAttribute("controls", 1);
+                            player.innerHTML = '';
+                            player.appendChild(audio)
+                            player.childNodes[0].addEventListener("ended", function () {
+                                end_audio.click();
+                            }, false);
+
+                            let file = new File([blob], "voice_msg.ogg", {
+                                type: "audio/mp3",
+                                lastModified: new Date().getTime()
+                            });
+                            let container = new DataTransfer();
+                            container.items.add(file);
+                            document.getElementById('audio_input').files = container.files;
+
+                            start_record.style.pointerEvents = 'all';
+                            start_record.style.opacity = '100%';
+                            end_record.style.pointerEvents = 'none';
+                            end_record.style.opacity = '0%';
+                            audio_recorder_play_stop_btns.style.display = 'flex';
+                        })
+                    })
+            }
+            end_record.onclick = () => {
+                mediaRecorder.stop();
+            }
+        }
+
+        {#  for play audio  #}
+        let start_audio = document.getElementById('start_audio');
+        let end_audio = document.getElementById('end_audio');
+        {% if voice_msg %}
+            player.addEventListener("ended", function () {
+                end_audio.click();
+            }, false);
+        {% endif %}
+        start_audio.onclick = () => {
+            {% if voice_msg %}
+                player.play();
+            {% else %}
+                player.childNodes[0].play();
+            {% endif %}
+            start_audio.style.pointerEvents = 'none';
+            start_audio.style.opacity = '0%';
+            end_audio.style.pointerEvents = 'all';
+            end_audio.style.opacity = '100%';
+        }
+        end_audio.onclick = () => {
+            {% if voice_msg %}
+                player.pause();
+                player.currentTime = 0;
+            {% else %}
+                player.childNodes[0].pause();
+                player.childNodes[0].currentTime = 0;
+            {% endif %}
+            end_audio.style.pointerEvents = 'none';
+            end_audio.style.opacity = '0%';
+            start_audio.style.pointerEvents = 'all';
+            start_audio.style.opacity = '100%';
+        }
+    </script>
+{% endblock %}

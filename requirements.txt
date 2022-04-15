@@ -65,3 +65,4 @@ wcwidth==0.2.5
 yarg==0.1.9
 zc.lockfile==2.0
 zipp==3.6.0
+mutagen~=1.45.1

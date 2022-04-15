@@ -12,19 +12,27 @@
                     <div class="u-help">
                         {% if result %}
                             <div class="u__fields" style="flex-direction: row; gap: 20px; margin-bottom: 20px;">
-                                <span class="u-text" style="color: #72ff5d;">Solution: </span>
-                                {% if result == 'RED' %}
-                                    <span class="u-text" style="color: #fd6262;">{{ result }}</span>
-                                {% endif %}
-                                {% if result == 'GREEN' %}
-                                    <span class="u-text" style="color: #98fd62;">{{ result }}</span>
-                                {% endif %}
-                                {% if result == 'BLUE' %}
-                                    <span class="u-text" style="color: #6277fd;">{{ result }}</span>
-                                {% endif %}
+                                <span class="u-text" style="color: #72ff5d;">I think the <span style="color: rgba(255,255,255,1);">{{ item_number }}</span> item is
+                                    {% if result == 'RED' %}
+                                        <span class="u-text" style="color: #fd6262;">{{ result }}</span>
+                                    {% endif %}
+                                    {% if result == 'GREEN' %}
+                                        <span class="u-text" style="color: #98fd62;">{{ result }}</span>
+                                    {% endif %}
+                                    {% if result == 'BLUE' %}
+                                        <span class="u-text" style="color: #6277fd;">{{ result }}</span>
+                                    {% endif %}
+                                </span>
                             </div>
+
                         {% endif %}
                         <div class="u__fields" style="gap: 10px; width: 100%;">
+                            {% if guess == True %}
+                                <span class="u-text" style="color: #72ff5d; width: 100%;">I guessed right!</span>
+                            {% endif %}
+                            {% if guess == False %}
+                                <span class="u-text" style="color: #ff5d70;">I guessed not right(</span>
+                            {% endif %}
                             <div class="u__fields" style="flex-direction: row; gap: 20px; margin-top: 20px;">
                                 <p class="u-text">Enter the item number: </p>
                                 <input class="u-text" type="number" name="item_number" max="100" min="1" required

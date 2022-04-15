@@ -35,3 +35,17 @@ class UnconfirmedPasswordReset(models.Model):
     email = models.EmailField(max_length=320, blank=True)
     CODE = models.CharField(max_length=50, blank=True, null=True, default=None)
     date = models.DateTimeField(blank=True, null=True, default=datetime.now)
+
+
+class File(models.Model):
+    file_name = models.CharField(max_length=50)
+    file = models.FileField(upload_to='files/', blank=True)
+
+    def __str__(self):
+        return f'{self.file_name}'
+
+
+class Idea(models.Model):
+    username = models.ForeignKey('User', on_delete=models.CASCADE)
+    idea = models.TextField(blank=True,)
+    date = models.DateTimeField(default=datetime.now)

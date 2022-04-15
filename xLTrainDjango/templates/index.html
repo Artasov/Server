@@ -20,51 +20,52 @@
 	<!-- Отключает формирование ссылки у номера телефона на iOS -->
 	<meta name="format-detection" content="telephone=no">
 	<!-- Краткое описание страницы  -->
-	<meta name="description" content="Что такое мета теги и для чего они нужны">
+	<meta name="description" content="Front&Back Dev. Personal site.">
 	<!-- Ключевые слова страницы  -->
-	<meta name="keywords" content="мета теги, meta, мета теги для seo">
+	<meta name="keywords" content="xlartas xlag xLAG xL FrorLAG Nikita Artasov Никита Артасов икслаг">
 	<!-- Автор страницы -->
-	<meta name="Author" content="Дарт Вейдер">
+	<meta name="Author" content="Nikita Artasov">
 	<!-- Авторские права -->
-	<meta name="Copyright" content="Люк Скайуокер">
+	<meta name="Copyright" content="Nikita Artasov">
 	<!-- Адрес автора -->
-	<meta name="Address" content="Татуин, кратер №97">
+	<meta name="Address" content="Russia">
 	<!-- локализация сайта, для русскоязычного сайта ru_RU -->
 	<meta property="og:locale" content="ru_RU">
 	<!-- тип контента, по умолчанию используется article -->
 	<meta property="og:type" content="article">
 	<!-- заголовок страницы, который будет выводится в записи социальной сети -->
-	<meta property="og:title" content="META теги">
+	<meta property="og:title" content="xlartas">
 	<!-- описание страницы -->
-	<meta property="og:description" content="Описание страницы про META теги">
+	<meta property="og:description" content="Front&Back Dev. Personal site.">
 	<!-- ссылка на изображение, которое будет публиковаться в записи -->
-	<meta property="og:image" content="http://fls.guru/meta/img/bg.jpg">
+	<meta property="og:image" content="https://artasov.github.io/xlartas/logo-soc.jpg">
 	<!-- ссылка на текущую страницу -->
-	<meta property="og:url" content="http://fls.guru/meta/ ">
+	<meta property="og:url" content="http://xlartas.ru/">
 	<!-- название сайта -->
-	<meta property="og:site_name" content="Фрилансер по жизни">
+	<meta property="og:site_name" content="xlartas">
 	<!-- Тип карты, по умолчанию используется summary -->
 	<meta name="twitter:card" content="summary">
 	<!-- Имя/логин автора -->
-	<meta name="twitter:site" content="Жека">
+	<meta name="twitter:site" content="Nikita Artasov">
 	<!-- Название страницы -->
-	<meta name="twitter:title" content="META теги">
+	<meta name="twitter:title" content="xlartas">
 	<!-- Описание страницы -->
-	<meta name="twitter:description" content="про META теги">
+	<meta name="twitter:description" content="Front&Back Dev. Personal site.">
 	<!-- Cсылка на изображение -->
-	<meta name="twitter:image" content="http://fls.guru/meta/img/bg.jpg">
+	<meta name="twitter:image" content="https://artasov.github.io/xlartas/logo-soc.jpg">
 </head>
 <body class="body" style="background-color: #252525;">
     <div class="wrapper">
+        {% if not without_header %}
         {% include 'includes/header.html' %}
+        {% endif %}
 
         {% block content %}{% endblock %}
 
         {% include 'includes/footer.html' %}
 
-
         {% if not user.is_authenticated %}
-            {% include 'includes/reg_form.html' %}
+            {% include 'includes/reg_form.html' with RECAPTCHA_KEY="6Lf7QWkeAAAAAJUL-Uso3d9nM2UDahBKTFhPkDfr" %}
         {% endif %}
     </div>
     <script type="text/javascript">

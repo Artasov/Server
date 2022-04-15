@@ -1,6 +1,10 @@
-from django.urls import path, include
+from django.conf import settings
+from django.conf.urls import url
+from django.urls import include, re_path
+from django.urls import path
+from django.views.static import serve
+
 from . import views
-import os
 
 urlpatterns = [
     path('', views.Home, name='home'),
@@ -19,10 +23,12 @@ urlpatterns = [
     path('password_reset_confirmation/', views.PasswordResetConfirmation, name='password_reset_confirmation'),
     path('regconfirm/', views.RegistrateConfirmation, name='registrate_confirmation'),
     path('resume/', views.Resume, name='resume'),
+    path('ideas/', views.Ideas, name='ideas'),
 
     path('api/program_auth/', views.ProgramAuth, name='program_auth'),
     path('api/set_hwid/', views.SetHWID, name='set_hwid'),
-    path('api-auth/', include('rest_framework.urls')),
 
+    re_path(r'download/(?P<path>.*)$', views.Download, name='download'),
 
+    url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
 ]

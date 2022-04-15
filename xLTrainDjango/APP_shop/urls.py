@@ -12,7 +12,6 @@ urlpatterns = [
     path('product/xLUMRA', views.Product, name='xLUMRA'),
     path('product/xLCracker', views.Product, name='xLCracker'),
     path('product/xLCracker', views.Product, name='xLCracker'),
-    url(r'^download/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}, name='download'),
 
 ]
 

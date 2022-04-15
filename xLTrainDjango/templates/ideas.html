@@ -1,0 +1,68 @@
+{% extends 'index.html'%}
+{% load static %}
+
+{% block title %}xlartas | iDEAS{% endblock %}
+
+{% block content %}
+    <div class="u">
+        <div class="u__container">
+            <div class="u__content" style="justify-content: center; gap: 40px;">
+                <p class="u-title">iDEAS</p>
+                <div class="u__form">
+                    <div class="u-help">
+                        <div class="u__fields">
+                            {% if captcha_invalid %}
+                            <span class="invalid">{{captcha_invalid }}</span>
+                            {% endif %}
+                            {% if success %}
+                            <span class="success">{{ success }}</span>
+                            {% endif %}
+                            <p class="u-text" style="max-width: 600px; padding: 0 1em;">
+                                Здесь вы можете предложить идеи для создания, обновления приложений, рассказать о багах,
+                                или оставить отзыв.
+                            </p>
+                            <form class="u__form" method="post" action="{% url 'ideas' %}">{% csrf_token %}
+                                <div class="u__fields">
+                                    <label>
+                                        <textarea minlength="50" class="u__field" name="idea" rows="80" cols="80" style="
+                                        min-width: 90%;
+                                        max-width: 600px;
+                                        min-height: 300px;
+                                        padding: 1em;">{{ idea }}</textarea>
+                                    </label>
+                                    <input class="u-submit2" type="submit" value="Send" style="margin: 0 !important;">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let inputs = document.getElementsByClassName('u__field');
+        for (let i = 0; i < inputs.length; i++) {
+            inputs[i].addEventListener('blur', function (e) {
+                if (inputs[i].value !== '') {
+                    inputs[i].style.borderColor = '#ff5f6c';
+                } else {
+                    inputs[i].style.borderColor = 'rgba(244, 247, 245, 0.7)';
+                }
+            })
+        }
+        window.addEventListener('load', function(e) {
+            var for_insert = document.getElementsByClassName('u-submit2')[0];
+            var el = document.createElement('script');
+            el.setAttribute('src', 'https://www.google.com/recaptcha/api.js');
+            var el2 = document.createElement('div');
+            if(document.getElementsByTagName('body')[0].classList.contains('_touch')){
+                el2.setAttribute("data-size", "compact")
+            }
+            el2.setAttribute("data-sitekey", "{{ RECAPTCHA_KEY }}");
+            el2.classList.add('g-recaptcha');
+            for_insert.before(el);
+            for_insert.before(el2);
+        });
+    </script>
+{% endblock %}

@@ -34,22 +34,26 @@ function check_mobile() {
 
    if (isMobile.any()) {
       document.body.classList.add('_touch');
-      document.getElementsByClassName('menu__burger-btn')[0].addEventListener('click', function (e) {
-         if (reg_active === true) {
-            document.getElementsByClassName('wrapper')[0].classList.remove('_active_reg-form');
-            reg_active = false
-         }
-         else {
-            document.getElementsByTagName('header')[0].classList.toggle('_when-menu-on');
-            document.getElementsByClassName('header__menu')[0].classList.toggle('_active_menu');
-            document.getElementsByClassName('wrapper')[0].classList.remove('_active_reg-form');
-         }
-         document.getElementsByClassName('body')[0].classList.toggle('_active_menu_OnBody');
-      });
+      if(document.getElementsByClassName('menu__burger-btn').length!==0){
+         document.getElementsByClassName('menu__burger-btn')[0].addEventListener('click', function (e) {
+            if (reg_active === true) {
+               document.getElementsByClassName('wrapper')[0].classList.remove('_active_reg-form');
+               reg_active = false
+            }
+            else {
+               document.getElementsByTagName('header')[0].classList.toggle('_when-menu-on');
+               document.getElementsByClassName('header__menu')[0].classList.toggle('_active_menu');
+               document.getElementsByClassName('wrapper')[0].classList.remove('_active_reg-form');
+            }
+            document.getElementsByClassName('body')[0].classList.toggle('_active_menu_OnBody');
+         });
+      }
    }
    else {
       document.body.classList.add('_pc');
-      document.getElementsByClassName('menu__burger-btn')[0].style.display = 'none';
+      if(document.getElementsByClassName('menu__burger-btn').length !== 0){
+         document.getElementsByClassName('menu__burger-btn')[0].style.display = 'none';
+      }
    }
 }
 

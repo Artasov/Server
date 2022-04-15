@@ -4,6 +4,9 @@ const { log } = console;
 
 var form_inputs = document.getElementsByClassName('form-input');
 
+function isDigit(str) {
+    return str && !/[^\d]/.test(str);
+}
 
 function changed_input(index) {
    var field_names= document.getElementsByClassName('reg-form__field-name');

@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.db import models
+from APP_home.models import File
 
 
 class Products(models.Model):
@@ -16,7 +17,7 @@ class Products(models.Model):
 
     date_update = models.DateTimeField(default=datetime.now)
 
-    distr = models.FileField(upload_to='files/', default="", blank=True)
+    distrs = models.ManyToManyField(File)
 
     def __str__(self):
         return f'{self.name}'
