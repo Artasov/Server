@@ -14,36 +14,25 @@ env = environ.Env()
 
 
 def PrivateMsgRead(request, key=None):
-    log('PrivateMsg reading...START')
     msg_object = PrivateMsg_.objects.filter(key=key)
-    log('PrivateMsg reading...1')
     if not msg_object.exists():
-        log('PrivateMsg does not exists msg')
-        log('PrivateMsg reading...END')
         return render(request, 'APP_private_msg/private-msg.html',
                       context={
                           'not_exist': 'Does not exists...',
                           'without_header': True
                       })
-
-    log('PrivateMsg reading...2')
     fields_private_msg = dict(PrivateMsg_.objects.filter(key=key).values()[0])
-    log('PrivateMsg reading...3')
     msg = fields_private_msg['msg']
-    log('PrivateMsg reading...4')
 
     # check time for auto del
     date_for_del = msg_object[0].date_for_del
-    log('PrivateMsg reading...5')
     if date_for_del < datetime.now():
-        log('PrivateMsg timeout')
         msg_object.delete()
         return render(request, 'APP_private_msg/private-msg.html',
                       context={
                           'not_exist': 'Does not exists...',
                           'header_logo_only': True
                       })
-    log('PrivateMsg reading...6')
     # delete and render page with read private MSG
 
     context = {
@@ -52,27 +41,19 @@ def PrivateMsgRead(request, key=None):
         'header_logo_only': True
     }
 
-    log('PrivateMsg reading...7')
     # if files exists
     if fields_private_msg['file'] != '':
-        log('PrivateMsg reading... +file')
         context['file'] = fields_private_msg['file']
         if '.png' in fields_private_msg['file'].lower() \
                 or '.jpg' in fields_private_msg['file'].lower() \
                 or '.jpeg' in fields_private_msg['file'].lower():
-            log('PrivateMsg reading... file - img')
             context['img'] = PrivateMsg_.objects.filter(key=key)[0].file.url
 
     if fields_private_msg['voice_msg'] != '':
-        log('PrivateMsg reading... +voice_msg')
         context['voice_msg'] = PrivateMsg_.objects.filter(key=key)[0].voice_msg.url
 
     msg_object.delete()
 
-    for i in range(len(context)):
-        log(f'{list(context.keys())[i]}:{context[list(context.keys())[i]]}')
-
-    log('PrivateMsg reading...END')
     return render(request, 'APP_private_msg/private-msg.html',
                   context=context)
 
@@ -90,13 +71,9 @@ def PrivateMsg(request, key=None):
 
     # If create private msg:
     if request.method == 'POST':
-        log('PrivateMsg creating... START')
-
         # reCAPTCHA
         result_reCAPTCHA = reCAPTCHA_validation(request)
-        if not result_reCAPTCHA['success']:
-            log('PrivateMsg invalid recaptcha')
-            log('PrivateMsg creating... END')
+        if not result_reCAPTCHA['success'] and not request.user.is_staff:
             return render(request, 'APP_private_msg/private-msg.html',
                           context={
                               'create': True,
@@ -148,11 +125,9 @@ def PrivateMsg(request, key=None):
                                   'header_logo_only': True
                               })
 
-        log('PrivateMsg creating... next step->create')
-
         # If sent is nothing
         if request.POST['msg'] == '' and file is None and voice_msg is None:
-            print(1)
+            log('PrivateMsg creating... No any data for create')
             return render(request, 'APP_private_msg/private-msg.html',
                           context={
                               'create': True,
@@ -160,8 +135,13 @@ def PrivateMsg(request, key=None):
                               'RECAPTCHA_KEY': env('GOOGLE_RECAPTCHA_SITE_KEY'),
                               'header_logo_only': True
                           })
-        PrivateMsg_.objects.create(msg=request.POST['msg'], file=file, voice_msg=voice_msg, key=KEY,
-                                   date_for_del=date_for_del).save()
+        log('PrivateMsg creating... next step->create')
+        try:
+            PrivateMsg_.objects.create(msg=request.POST['msg'], file=file, voice_msg=voice_msg, key=KEY,
+                                       date_for_del=date_for_del).save()
+        except Exception as e:
+            log(f'ERROR: {e}')
+            raise SystemError
 
         link = request.get_host() + request.path + f'{KEY}/'
         log('PrivateMsg creating... success END')
@@ -172,6 +152,7 @@ def PrivateMsg(request, key=None):
                           'header_logo_only': True
                       })
     log('PrivateMsg open')
+
     return render(request, 'APP_private_msg/private-msg.html',
                   context={
                       'create': 'create',

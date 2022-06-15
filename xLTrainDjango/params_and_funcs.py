@@ -1,13 +1,16 @@
-import re
-import os
-from datetime import datetime, timedelta
-from django.conf import settings
-from APP_shop.models import Products
-import urllib
 import json
-import time
-from xLTrainDjango import settings
+import os
+import re
+import urllib
+from datetime import datetime, timedelta
+
+from django.conf import settings
+
+from APP_home.models import User
 from APP_private_msg.models import PrivateMsg
+from APP_shop.models import Products, Licenses
+from xLTrainDjango import settings
+
 
 def check_registration_field_correctness(result: dict):
     RFS = {  # Registration Field Setting
@@ -33,14 +36,14 @@ def check_registration_field_correctness(result: dict):
                     and len(res.group(0)) == len(result['username'][0])
                     and RFS['username'][0] <= len(res.group(0)) <= RFS['username'][1]):
                 ERROR_ARR[
-                    'Login'] = f'The <span class="warning-var">Login</span> field must be filled in, must not contain spaces or special characters, and must be at least {RFS["username"][0]} characters long.'
+                    'Login'] = f'The Login field must be filled in, must not contain spaces or special characters, and must be at least {RFS["username"][0]} characters long.'
 
         if i == 'password':
             res = result['password'][0]
             if not (res is not None
                     and RFS['password'][0] <= len(res) <= RFS['password'][1]):
                 ERROR_ARR[
-                    'Password'] = f'The <span class="warning-var">Password</span> field must be filled in and must be at least {RFS["password"][0]} characters long.'
+                    'Password'] = f'The Password field must be filled in and must be at least {RFS["password"][0]} characters long.'
 
         if i == 'first_name':
             res = re.match(r'\w+', result['first_name'][0])
@@ -48,7 +51,7 @@ def check_registration_field_correctness(result: dict):
                     and len(res.group(0)) == len(result['first_name'][0])
                     and RFS['first_name'][0] <= len(res.group(0)) <= RFS['first_name'][1]):
                 ERROR_ARR[
-                    'First name'] = f'The <span class="warning-var">First name</span> field must be filled in, must not contain spaces, special characters and numbers, and must be at least {RFS["first_name"][0]} characters long.'
+                    'First name'] = f'The First name field must be filled in, must not contain spaces, special characters and numbers, and must be at least {RFS["first_name"][0]} characters long.'
 
         if i == 'last_name':
             res = re.match(r'\w+', result['last_name'][0])
@@ -56,7 +59,7 @@ def check_registration_field_correctness(result: dict):
                     and len(res.group(0)) == len(result['last_name'][0])
                     and RFS['last_name'][0] <= len(res.group(0)) <= RFS['last_name'][1]):
                 ERROR_ARR[
-                    'Last name'] = f'The <span class="warning-var">Last name</span> field must be filled in, must not contain spaces, special characters and numbers, and must be at least {RFS["last_name"][0]} characters long.'
+                    'Last name'] = f'The Last name field must be filled in, must not contain spaces, special characters and numbers, and must be at least {RFS["last_name"][0]} characters long.'
 
         if i == 'age':
             res = re.match(r'[0-9]+', result['age'][0])
@@ -64,26 +67,26 @@ def check_registration_field_correctness(result: dict):
                     and len(res.group(0)) == len(result['age'][0])
                     and RFS['age'][0] <= len(res.group(0)) <= RFS['age'][1]):
                 ERROR_ARR[
-                    'Age'] = f'The <span class="warning-var">Age</span> field must be filled in, must contain no more than three digits.'
+                    'Age'] = f'The Age field must be filled in, must contain no more than three digits.'
 
         if i == 'email':
             if not EMAIL_validator(result['email'][0], RFS['email'][0], RFS['email'][1]):
                 ERROR_ARR[
-                    'Email'] = f'The <span class="warning-var">Email</span> field must be filled in, must have the type ***@***.***'
+                    'Email'] = f'The Email field must be filled in, must have the type ***@***.***'
 
         if i == 'tel':
             res = re.match(r'[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}', result['tel'][0])
             if not (res is not None
                     and len(res.group(0)) == len(result['tel'][0])
                     and RFS['tel'][0] <= len(res.group(0)) <= RFS['tel'][1]):
-                ERROR_ARR['Tel'] = f'The <span class="warning-var">Tel</span> field must be filled in'
+                ERROR_ARR['Tel'] = f'The Tel field must be filled in'
 
         if i == 'gender':
             res = result['gender'][0]
             if not (res is not None
                     and len(res) == len(result['gender'][0])
                     and RFS['gender'][0] <= len(res) <= RFS['gender'][1]):
-                ERROR_ARR['Gender'] = f'The <span class="warning-var">Gender</span> field must be filled in'
+                ERROR_ARR['Gender'] = f'The Gender field must be filled in'
 
     return ERROR_ARR
 
@@ -108,79 +111,19 @@ def TEL_validator(tel: str, min_len: int = 11, max_len: int = 12) -> bool:
         return False
 
 
-def set_license(user_license_, product, license_time):
-    if product == 'xL Guild Manager':
-        if datetime.now() > user_license_.xLGM_date_end:
-            if license_time == 'price_forever':
-                user_license_.xLGM_date_end = datetime.now() + timedelta(days=365 * 10)
-            if license_time == 'price_week':
-                user_license_.xLGM_date_end = datetime.now() + timedelta(days=7)
-            if license_time == 'price_month':
-                user_license_.xLGM_date_end = datetime.now() + timedelta(days=31)
-            if license_time == 'price_6_month':
-                user_license_.xLGM_date_end = datetime.now() + timedelta(days=31 * 6)
-        else:
-            if license_time == 'price_forever':
-                user_license_.xLGM_date_end = user_license_.xLGM_date_end + timedelta(days=365 * 10)
-            if license_time == 'price_week':
-                user_license_.xLGM_date_end = user_license_.xLGM_date_end + timedelta(days=7)
-            if license_time == 'price_month':
-                user_license_.xLGM_date_end = user_license_.xLGM_date_end + timedelta(days=31)
-            if license_time == 'price_6_month':
-                user_license_.xLGM_date_end = user_license_.xLGM_date_end + timedelta(days=31 * 6)
-        user_license_.save()
-    if product == 'xLUMRA':
-        if datetime.now() > user_license_.xLUMRA_date_end:
-            if license_time == 'price_forever':
-                user_license_.xLUMRA_date_end = datetime.now() + timedelta(days=365 * 10)
-            if license_time == 'price_week':
-                user_license_.xLUMRA_date_end = datetime.now() + timedelta(days=7)
-            if license_time == 'price_month':
-                user_license_.xLUMRA_date_end = datetime.now() + timedelta(days=30)
-            if license_time == 'price_6_month':
-                user_license_.xLUMRA_date_end = datetime.now() + timedelta(days=30 * 6)
-        else:
-            if license_time == 'price_forever':
-                user_license_.xLUMRA_date_end = user_license_.xLUMRA_date_end + timedelta(days=365 * 10)
-            if license_time == 'price_week':
-                user_license_.xLUMRA_date_end = user_license_.xLUMRA_date_end + timedelta(days=7)
-            if license_time == 'price_month':
-                user_license_.xLUMRA_date_end = user_license_.xLUMRA_date_end + timedelta(days=30)
-            if license_time == 'price_6_month':
-                user_license_.xLUMRA_date_end = user_license_.xLUMRA_date_end + timedelta(days=30 * 6)
-        user_license_.save()
-    if product == 'xLCracker':
-        if datetime.now() > user_license_.xLCracker_date_end:
-            if license_time == 'price_forever':
-                user_license_.xLCracker_date_end = datetime.now() + timedelta(days=365 * 10)
-            if license_time == 'price_week':
-                user_license_.xLCracker_date_end = datetime.now() + timedelta(days=7)
-            if license_time == 'price_month':
-                user_license_.xLCracker_date_end = datetime.now() + timedelta(days=30)
-            if license_time == 'price_6_month':
-                user_license_.xLCracker_date_end = datetime.now() + timedelta(days=30 * 6)
-        else:
-            if license_time == 'price_forever':
-                user_license_.xLUMRA_date_end = user_license_.xLUMRA_date_end + timedelta(days=365 * 10)
-            if license_time == 'price_week':
-                user_license_.xLUMRA_date_end = user_license_.xLUMRA_date_end + timedelta(days=7)
-            if license_time == 'price_month':
-                user_license_.xLUMRA_date_end = user_license_.xLUMRA_date_end + timedelta(days=31)
-            if license_time == 'price_6_month':
-                user_license_.xLUMRA_date_end = user_license_.xLUMRA_date_end + timedelta(days=31 * 6)
-        user_license_.save()
-
-
-def get_price(product, license_time):
+def add_license_time(username, product, seconds):
+    user_ = User.objects.get(username=username)
     product_ = Products.objects.get(name=product)
-    if license_time == 'price_forever':
-        return product_.price_forever
-    if license_time == 'price_week':
-        return product_.price_week
-    if license_time == 'price_month':
-        return product_.price_month
-    if license_time == 'price_6_month':
-        return product_.price_6_month
+    if Licenses.objects.filter(username=user_, product=product_).exists():
+        license_ = Licenses.objects.get(username=user_, product=product_)
+        if license_.date_end > datetime.utcnow():
+            license_.date_end = license_.date_end + timedelta(seconds=seconds)
+        else:
+            license_.date_end = datetime.utcnow() + timedelta(seconds=seconds)
+    else:
+        license_ = Licenses.objects.create(username=user_, product=product_)
+        license_.date_end = datetime.utcnow() + timedelta(seconds=seconds)
+    license_.save()
 
 
 def reCAPTCHA_validation(request):
@@ -202,7 +145,6 @@ def log(STRING: str):
     with open(path, 'a', encoding='utf-8') as file:
         date = str(datetime.now()) + " "
         file.write(date + STRING + '\n')
-
 
 
 def clearing_private_msg():

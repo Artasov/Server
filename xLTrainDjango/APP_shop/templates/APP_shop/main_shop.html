@@ -1,51 +1,76 @@
 {% extends 'index.html' %}
 {%  load static %}
-{% load sass_tags %}
 
 {% block title %}xlartas | SHOP{% endblock %}
 
-{% block link_content_css %}
-    <link href="{% sass_src 'shop/css/main_shop.sass' %}" rel="stylesheet" type="text/css">
-{% endblock %}
-
 {% block content %}
-    <div class="shop">
-	    <div class="shop__container">
-	    	<div class="shop__content">
-	    		<div class="products">
-                    {% for product in context.values %}
-	    			    <div class="product">
-	    			    	<a href="{% url product.name %}" class="product__img-block">
-                                {% if product.name == 'xL Guild Manager' %}
-                                    <img class="product-img" src="{% static 'shop/img/xLGM.png' %}" alt="">
-                                {% endif %}
-                                {% if product.name == 'xLUMRA' %}
-                                    <img class="product-img" src="{% static 'shop/img/xLUMRA.png' %}" alt="">
-                                {% endif %}
-                                {% if product.name == 'xLCracker' %}
-                                    <img class="product-img" src="{% static 'shop/img/xLCracker.png' %}" alt="">
-                                {% endif %}
-	    			    	</a>
-	    			    	<a href="{% url product.name %}" class="product-name">{{ product.name }}</a>
-	    			    	<form action="{% url 'shop' %}" method="post" class="product__buy-block">{% csrf_token %}
-	    			    		<input type="submit" class="btn-buy" value="Buy">
-	    			    		<div class="price-block">
-	    			    			<p class="price">{{ product.price }}₽</p>
-	    			    		</div>
-                                <input type="hidden" name="product" value="{{ product.name }}">
-	    			    	</form>
-	    			    </div>
-                    {% endfor %}
-                    {% if reg_need %}
-                        <script>
-                            window.addEventListener('load', function(e) {
-                                document.getElementsByClassName('menu__burger-btn')[0].click();
-                                document.getElementsByClassName('btn_reg')[0].click();
-                            });
-                        </script>
+    <div class="u">
+        <div class="u__container">
+            <div class="u__content">
+                <div class="u__gfields no_scrollbar" style="width: 100%; overflow-y: auto;">
+
+                    {% for product in products %}
+                    <a href="{% url 'product' product.name%}" class="u__fields u-disable-tap-highlight" style="
+                    height: 100%;
+                    {% if product.name == 'xLCracker'%}
+                    pointer-events: none;
+                    filter: grayscale(1);
                     {% endif %}
-	    		</div>
-	    	</div>
-	    </div>
+                    ">
+                        <div class="u__fields u-text1" style="
+                        padding: 2em 0;
+                        background: rgba(255,255,255,0.02);
+                        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+                        border-radius: 30px;">
+                            <div style="
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            padding-bottom: 0.4em;">
+                                <img src="{% static 'APP_shop/img/' %}{{ product.name }}.png" style="
+                                object-fit: contain;
+                                margin: 0 auto;
+                                width: 50%;
+                                ">
+                            </div>
+
+                            <p class="u-text4" style="
+                            padding-bottom: 0.4em;
+                            padding-left: 1em;
+                            padding-right: 1em;
+                            color: #d7d7d7;
+                            font-weight: 600;
+                            text-align: center;
+                            letter-spacing: 0.1em;">
+                                {{ product.long_name }}
+                            </p>
+
+                            <p class="u-text1" style="
+                            padding-bottom: 0.4em;
+                            padding-left: 1em;
+                            padding-right: 1em;
+                            color: #aaaaaa;
+                            text-align: center;">
+                                {{ product.desc|slice:"80" }}...
+                            </p>
+
+                            <form action="{% url 'shop' %}" method="post" class="product__buy-block hover1_1" style="
+                            margin-top: 1em;">{% csrf_token %}
+                                <input type="submit" class="btn-buy u-text2" value="Buy" style="
+                                padding: 0.5em 1.5em;">
+
+                                <div class="price-block" style="
+                                padding: 0.5em 1.6em 0.5em 1.5em;">
+                                    <p class="price u-text2">{{ product.price_week }}₽</p>
+                                </div>
+
+                                <input type="hidden" name="product" value="{{ product.name }}">
+                            </form>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}

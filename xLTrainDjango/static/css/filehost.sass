@@ -1,0 +1,148 @@
+
+._pc
+  .drop-zone
+    transition: all 350ms ease
+    background: rgba(0,0,0,0.2)
+    width: 70%
+    height: 20vh
+    border-style: dashed
+    border-width: 9px
+    border-color: rgba(0,0,0,0.4)
+    display: flex
+    flex-direction: column
+    justify-content: center
+._touch
+  .drop-zone
+    display: none
+  .file-el
+    grid-template: 1fr 1fr / 90 1% 9% !important
+
+.opened_img
+  z-index: 100
+  position: fixed !important
+  left: 0
+  top: 0
+  width: 100vw !important
+  height: 100vh !important
+  max-height: 100vh !important
+  &:before
+    z-index: 99
+    width: 100vw
+    height: 100vh
+    content: ""
+    background: rgba(0,0,0,0.7)
+    position: absolute !important
+    left: 0
+    top: 0
+
+.abosulte_center
+  z-index: 101
+  width: auto !important
+  height: auto !important
+  object-fit: cover	!important
+  margin: 0 auto
+  max-width: 100% !important
+  max-height: 100% !important
+  &:hover
+    transform: none !important
+
+.display_none
+  display: none !important
+
+.img-view-zone
+  transition: all 200ms ease
+  display: none
+  grid-template: 1fr / 1fr
+  max-width: 70%
+  gap: 1em
+  background: rgba(0,0,0,0.3)
+  border-radius: 20px
+  padding: 15px
+  .img_block
+    position: relative
+    max-height: 200px
+    //border: 2px solid red
+    transition: all 450ms ease
+    margin: 0 auto
+    display: flex
+    flex-direction: column
+    justify-content: center
+    .img-el
+      //border: 2px solid red
+      max-height: 200px
+      transition: all 200ms ease
+      width: 100%
+    .btn-img-del-block
+      //border: 2px solid white
+      position: absolute
+      right: 0
+      top: 0
+      width: 2em
+      display: flex
+      flex-direction: column
+      justify-content: center
+      background: #262626
+      border-radius: 1em
+      .btn-img-del
+        //border: 2px solid #5fff5f
+        filter: invert(0.9)
+        transform: scale(0.7)
+
+
+
+._pc
+  .file-view-zone
+    width: 60%
+  .file-el
+    grid-template: 1fr / 45% 45% 10%
+
+.file-view-zone
+  user-select: none
+  //border: 2px solid blue
+  display: none
+  flex-direction: column
+  justify-content: center
+  .file-el
+    //border: 2px solid red
+    width: 100%
+    display: grid
+    grid-template: 1fr / 45% 45% 10%
+    .file-name-block
+      //border: 2px solid white
+      display: flex
+      flex-direction: column
+      justify-content: center
+      .file-name
+        //border: 2px solid #5fff5f
+        color: #F5F5F5
+        overflow: hidden
+    .file-size-block
+      //border: 2px solid white
+      display: flex
+      flex-direction: column
+      justify-content: center
+      .file-size
+        //border: 2px solid #5fff5f
+        color: #AAAAAA
+    .btn-file-del-block
+      //border: 2px solid white
+      display: flex
+      flex-direction: column
+      justify-content: center
+      .btn-file-del
+        //border: 2px solid #5fff5f
+        filter: invert(0.9)
+        transform: scale(0.7)
+
+._touch
+  .file-size
+    display: none !important
+  .file-view-zone
+    width: 80%
+._pc
+  .btn-file-del
+    width: 50%
+
+
+.drop
+  background: rgba(255, 0, 42, 0.2) !important

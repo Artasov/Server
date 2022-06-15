@@ -1,0 +1,63 @@
+{% extends 'index.html' %}
+{%  load static %}
+
+{% block title %}xlartas | REGISTRATION{% endblock %}
+
+{% block content %}
+    <div class="u">
+        <div class="u__container u-disable-tap-highlight">
+            <div class="u__content">
+                <form class="u__form" method="post" action="{% url 'registration' %}">{% csrf_token %}
+                    <p class="u-text6 u-text-align-center" style="color: #F5F5F5; font-weight: 500">REGISTRATION</p>
+
+                    <div class="u-help">
+                        {% if invalid %}
+                            <span class="invalid">{{ invalid }}</span>
+                        {% endif %}
+                        {% if captcha_invalid %}
+                            <span class="invalid">{{ captcha_invalid }}</span>
+                        {% endif %}
+                        <div class="u__fields">
+                            <input name="username" required type="text" placeholder="Login" class="u__field u-text3" value="{{ username }}">
+                            <input name="email"  required type="email" placeholder="Email" class="u__field u-text3" value="{{ email }}">
+                            <input name="password" minlength="6" required type="password" placeholder="Password" class="u__field  u-text3">
+                        </div>
+                        <p class="u-text1" style="padding: 10px 35px 20px 35px; line-height: 20px;">
+                            <a href="{% url 'login' %}" style="color: #777777;">Already have an account? Sign in.</a>
+                        </p>
+                        <input class="u-submit btn-submit-reg u-text3" type="submit" value="Registrate" style="margin-top: 20px;">
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        let inputs = document.getElementsByClassName('u__field')
+        for (let i = 0; i < inputs.length; i++){
+            inputs[i].addEventListener('blur', function (e) {
+                if(inputs[i].value !== ''){
+                    inputs[i].style.borderColor = '#ff5f6c';
+                }
+                else{
+                    inputs[i].style.borderColor = 'rgba(244, 247, 245, 0.7)';
+                }
+            })
+        }
+    </script>
+    <script>
+        window.addEventListener('load', function(e) {
+            var for_insert = document.getElementsByClassName('btn-submit-reg')[0];
+            var el = document.createElement('script');
+            el.setAttribute('src', 'https://www.google.com/recaptcha/api.js');
+            var el2 = document.createElement('div');
+            if(document.getElementsByTagName('body')[0].classList.contains('_touch')){
+                el2.setAttribute("data-size", "compact")
+            }
+            el2.setAttribute("data-sitekey", "{{ RECAPTCHA_KEY }}");
+            el2.classList.add('g-recaptcha');
+            for_insert.before(el);
+            for_insert.before(el2);
+        });
+    </script>
+{% endblock %}

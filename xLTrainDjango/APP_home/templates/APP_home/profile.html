@@ -9,154 +9,63 @@
         <div class="u__container">
             <div class="u__content">
                 <div class="u-help no_scrollbar" style="overflow-y: scroll;">
-                    <div class="u__fields no_scrollbar"
-                         style="padding-top: 10px; padding-bottom: 10px; overflow-y: auto; gap: 30px; max-width: 900px !important;">
-                        <p class="warr-text">{{ warr }}</p>
+                    <p class="u-text6 u-text-align-center" style="
+                    letter-spacing: 0.1em;
+                    color: #F5F5F5;
+                    font-weight: 500">
+                        {{ user.get_username }} Profile
+                    </p>
 
-                        <div class="u__field-line">
+                    <div class="u__fields no_scrollbar" style="
+                    padding-top: 5em;
+                    padding-bottom: 10px;
+                    overflow-y: auto;
+                    gap: 30px;
+                    width: 80%;
+                    max-width: 700px !important;">
+
+
+                        <div style="display:flex; justify-content: space-between; width: 100%;">
                             <div style="width: 100%; margin: 0 auto; display:flex; flex-direction: column; justify-content: center;">
-                                <span class="u-text" style="color: #aaaaaa; margin: 0 auto; text-align: center;">Login</span>
+                                <span class="u-text3" style="color: #aaaaaa; margin: 0 auto; text-align: center;">Login</span>
                             </div>
                             <div style="width: 100%; margin: 0 auto; display:flex; flex-direction: column; justify-content: center;">
-                                <p class="u-text" style="overflow: hidden; width: 100%; text-align: center; margin: 0 auto; color: #f5f5f5;">{{ user.username }}</p>
-                            </div>
-                        </div>
-
-<div style="min-height: 1px; width: 100%; background-color: #bbbbbb;"></div>
-
-                        <div style="width: 100%; height: 100%;">
-                            <form method="post" action="{% url 'set_nickname' %}" class="u__field-line"
-                                  style="margin: 0 auto;">{% csrf_token %}
-                                <div style="width: 100%; margin: 0 auto; display:flex; flex-direction: column; justify-content: center;">
-                                    <span class="u-text edit_field-name" style="color: #d59095;margin: 0 auto; text-align: center;">Nickname</span>
-                                    <div class="btn-save-field" onclick="document.getElementById('submit1').click()">
-                                        <span class="u-text" style="color: #72ff5d;">SAVE</span>
-                                    </div>
-                                </div>
-                                <div style="width: 100%; margin: 0 auto; display:flex; flex-direction: column; justify-content: center;">
-                                    <input class="edit_field u-text" name="nickname" type="text" maxlength="25"
-                                           style="background-color: rgba(0,0,0,0); overflow: hidden; width: 100%; text-align: center; margin: 0 auto; color: #f5f5f5;"
-                                           value="{{ user.nickname }}">
-                                </div>
-                                <input id="submit1" type="submit" hidden>
-                            </form>
-                        </div>
-
-<div style="min-height: 1px; width: 100%; background-color: #bbbbbb;"></div>
-
-                        <div style="width: 100%; height: 100%;">
-                            <form method="post" action="{% url 'set_guild' %}" class="u__field-line"
-                                  style="margin: 0 auto;">{% csrf_token %}
-                                <div style="width: 100%; margin: 0 auto; display:flex; flex-direction: column; justify-content: center;">
-                                    <span class="u-text edit_field-name" style="color: #d59095;margin: 0 auto; text-align: center;">Guild</span>
-                                    <div class="btn-save-field" onclick="document.getElementById('submit2').click()">
-                                        <span class="u-text" style="color: #72ff5d;">SAVE</span>
-                                    </div>
-                                </div>
-                                <div style="width: 100%; margin: 0 auto; display:flex; flex-direction: column; justify-content: center;">
-                                    <input class="edit_field u-text" name="guild" type="text" maxlength="25"
-                                           style="background-color: rgba(0,0,0,0); overflow: hidden; width: 100%; text-align: center; margin: 0 auto; color: #f5f5f5;"
-                                           value="{{ user.guild }}">
-                                </div>
-                                <input id="submit2" type="submit" hidden>
-                            </form>
-                        </div>
-
-<div style="min-height: 1px; width: 100%; background-color: #bbbbbb;"></div>
-
-                        <div class="u__field-line">
-                            <div style="width: 100%; margin: 0 auto; display:flex; flex-direction: column; justify-content: center;">
-                                <span class="u-text" style="color: #aaaaaa; margin: 0 auto; text-align: center;">Email</span>
-                            </div>
-                            <div style="width: 100%; margin: 0 auto; display:flex; flex-direction: column; justify-content: center;">
-                                <input readonly class="u-text" style="background-color: rgba(0,0,0,0); max-width: 450px; overflow: hidden; width: 100%; text-align: center; margin: 0 auto; color: #f5f5f5; padding-bottom: 1px;" value="{{ user.email }}">
+                                <p class="u-text3" style="overflow: hidden; width: 100%; text-align: center; margin: 0 auto; color: #f5f5f5;">{{ user.username }}</p>
                             </div>
                         </div>
 
+
 <div style="min-height: 1px; width: 100%; background-color: #bbbbbb;"></div>
 
-                        <div class="u__field-line">
+                        <div style="display:flex; justify-content: space-between; width: 100%;">
                             <div style="width: 100%; margin: 0 auto; display:flex; flex-direction: column; justify-content: center;">
-                                <span class="u-text" style="color: #aaaaaa; margin: 0 auto; text-align: center;">Gender</span>
+                                <span class="u-text3" style="color: #aaaaaa; margin: 0 auto; text-align: center;">Email</span>
                             </div>
                             <div style="width: 100%; margin: 0 auto; display:flex; flex-direction: column; justify-content: center;">
-                                <p class="u-text" style="overflow: hidden; width: 100%; text-align: center; margin: 0 auto; color: #f5f5f5;">{{ user.gender }}</p>
+                                <input readonly class="u-text1" style="background-color: rgba(0,0,0,0); max-width: 450px; overflow: hidden; width: 100%; text-align: center; margin: 0 auto; color: #f5f5f5; padding-bottom: 1px;" value="{{ user.email }}">
                             </div>
                         </div>
-
+                        {% for product_name in least_days.items %}
 <div style="min-height: 1px; width: 100%; background-color: #bbbbbb;"></div>
-
-                        <div class="u__field-line">
+                        <div style="display:flex; justify-content: space-between; width: 100%;">
                             <div style="width: 100%; margin: 0 auto; display:flex; flex-direction: column; justify-content: center;">
-                                <span class="u-text" style="color: #aaaaaa; margin: 0 auto; text-align: center;">xLGM</span>
+                                <span class="u-text3" style="color: #aaaaaa; margin: 0 auto; text-align: center;">{{ product_name.0 }}</span>
                             </div>
                             <div style="width: 100%; margin: 0 auto; display:flex; flex-direction: column; justify-content: center;">
-                                {% if least_days.xLGM > 0%}
-                                    <p class="u-text" style="overflow: hidden; width: 100%; text-align: center; margin: 0 auto; color: #8bff8b;">{{ least_days.xLGM }} hour</p>
-                                {% elif least_days.xLGM == 'FOREVER'%}
-                                    <p class="u-text" style="overflow: hidden; width: 100%; text-align: center; margin: 0 auto; color: #8bff8b;">{{ least_days.xLGM }}</p>
+                                {% if product_name.1 > 0%}
+                                    <p class="u-text3" style="overflow: hidden; width: 100%; text-align: center; margin: 0 auto; color: #8bff8b;">{{ product_name.1 }} hour</p>
+                                {% elif product_name.1 == 'FOREVER'%}
+                                    <p class="u-text3" style="overflow: hidden; width: 100%; text-align: center; margin: 0 auto; color: #8bff8b;">{{ product_name.1 }}</p>
                                 {% else %}
-                                    <p class="u-text" style="overflow: hidden; width: 100%; text-align: center; margin: 0 auto; color: #ff8b9f;">{{ least_days.xLGM }}</p>
+                                    <p class="u-text3" style="overflow: hidden; width: 100%; text-align: center; margin: 0 auto; color: #ff8b9f;">{{ product_name.1 }}</p>
                                 {% endif %}
                             </div>
                         </div>
-
-<div style="min-height: 1px; width: 100%; background-color: #bbbbbb;"></div>
-
-                        <div class="u__field-line">
-                            <div style="width: 100%; margin: 0 auto; display:flex; flex-direction: column; justify-content: center;">
-                                <span style="color: #aaaaaa; margin: 0 auto; text-align: center;" class="u-text">xLCracker</span>
-                            </div>
-                            <div style="width: 100%; margin: 0 auto; display:flex; flex-direction: column; justify-content: center;">
-                                {% if least_days.xLCracker > 0%}
-                                    <p class="u-text" style="overflow: hidden; width: 100%; text-align: center; margin: 0 auto; color: #8bff8b;">{{ least_days.xLCracker }} hour</p>
-                                {% elif least_days.xLCracker == 'FOREVER'%}
-                                    <p class="u-text" style="overflow: hidden; width: 100%; text-align: center; margin: 0 auto; color: #8bff8b;">{{ least_days.xLCracker }}</p>
-                                {% else %}
-                                    <p class="u-text" style="overflow: hidden; width: 100%; text-align: center; margin: 0 auto; color: #ff8b9f;">{{ least_days.xLCracker }}</p>
-                                {% endif %}
-                            </div>
-                        </div>
-
-<div style="min-height: 1px; width: 100%; background-color: #bbbbbb;"></div>
-
-                        <div class="u__field-line">
-                            <div style="width: 100%; margin: 0 auto; display:flex; flex-direction: column; justify-content: center;">
-                                <span class="u-text" style="color: #aaaaaa; margin: 0 auto; text-align: center;">xLUMRA</span>
-                            </div>
-                            <div style="width: 100%; margin: 0 auto; display:flex; flex-direction: column; justify-content: center;">
-                                {% if least_days.xLUMRA > 0%}
-                                    <p class="u-text" style="overflow: hidden; width: 100%; text-align: center; margin: 0 auto; color: #8bff8b;">{{ least_days.xLUMRA }} hour</p>
-                                {% elif least_days.xLUMRA == 'FOREVER'%}
-                                    <p class="u-text" style="overflow: hidden; width: 100%; text-align: center; margin: 0 auto; color: #8bff8b;">{{ least_days.xLUMRA }}</p>
-                                {% else %}
-                                    <p class="u-text" style="overflow: hidden; width: 100%; text-align: center; margin: 0 auto; color: #ff8b9f;">{{ least_days.xLUMRA }}</p>
-                                {% endif %}
-                            </div>
-                        </div>
-
-                        <a href="{% url 'pay' %}"
-                            style="border: 2px solid #ff5f6c; padding: 0.6em 1em; text-align: center; max-width: 60%; margin: 20px 0; border-radius: 10px; color: #f5f5f5;" class="mid-btn">
-                            <p style="overflow: hidden;">Check payment</p>
-                        </a>
+                        {% endfor %}
+                        <a href="{% url 'pay' %}" class="u-submit2 u-text3 u-disable-tap-highlight" style="margin-top: 30px;">Check payment</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        let inputs = document.getElementsByClassName('edit_field')
-        btns = document.getElementsByClassName('btn-save-field')
-        names_field_with_input = document.getElementsByClassName('edit_field-name')
-        for (let i = 0; i < inputs.length; i++) {
-            inputs[i].addEventListener('focus', function (e) {
-                btns[i].classList.toggle('btn-save-field-active')
-            })
-        }
-    </script>
-    <script>
-        window.addEventListener('load', function (e) {
-            document.getElementsByTagName('footer')[0].style.display = 'none';
-        });
-    </script>
 {% endblock %}

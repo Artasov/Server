@@ -4,6 +4,7 @@
 
 import os
 from pathlib import Path
+
 import environ
 
 env = environ.Env()
@@ -26,13 +27,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'rest_framework',
-    'sass_processor',
-    'snippets',
     'APP_home',
     'APP_shop',
-    'APP_task',
     'APP_api',
-    'APP_private_msg'
+    'APP_private_msg',
+    'APP_filehost',
+    'sass_processor',
 ]
 
 STATICFILES_FINDERS = [
@@ -40,10 +40,6 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'sass_processor.finders.CssFinder',
 ]
-
-# Django Sass
-SASS_PROCESSOR_ROOT = BASE_DIR / 'static'
-SASS_OUTPUT_STYLE = 'compressed'  # compact, compressed, expanded, nested
 
 MIDDLEWARE = [
     'django_referrer_policy.middleware.ReferrerPolicyMiddleware',
@@ -151,9 +147,10 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
-LOGIN_REDIRECT_URL = 'home'
+# Django Sass
+SASS_PROCESSOR_ROOT = STATIC_ROOT
+SASS_OUTPUT_STYLE = 'compressed'  # compact, compressed, expanded, nested
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 LOGIN_URL = 'home'
 GOOGLE_RECAPTCHA_SECRET_KEY = env('GOOGLE_RECAPTCHA_SECRET_KEY')
 GOOGLE_RECAPTCHA_SITE_KEY = env('GOOGLE_RECAPTCHA_SITE_KEY')
@@ -163,6 +160,7 @@ GOOGLE_RECAPTCHA_SITE_KEY = env('GOOGLE_RECAPTCHA_SITE_KEY')
 # EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 # EMAIL_PORT = 587
 # EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.timeweb.ru'
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
@@ -171,3 +169,5 @@ EMAIL_USE_SSL = False
 EMAIL_USE_TLS = False
 DEFAULT_FROM_EMAIL = env('EMAIL_HOST_USER')
 SERVER_EMAIL = env('EMAIL_HOST_USER')
+
+LOGIN_REDIRECT_URL = 'home'

@@ -7,9 +7,17 @@
     <div class="u">
         <div class="u__container">
             <div class="u__content" style="justify-content: center; gap: 40px;">
-                <p class="u-title">iDEAS</p>
                 <div class="u__form">
+
                     <div class="u-help">
+                        <p class="u-text6 u-text-align-center" style="
+                        letter-spacing: 0.1em;
+                        color: #F5F5F5;
+                        font-weight: 500;
+                        padding-bottom: 20px;
+                        ">
+                            iDEAS
+                        </p>
                         <div class="u__fields">
                             {% if captcha_invalid %}
                             <span class="invalid">{{captcha_invalid }}</span>
@@ -17,20 +25,20 @@
                             {% if success %}
                             <span class="success">{{ success }}</span>
                             {% endif %}
-                            <p class="u-text" style="max-width: 600px; padding: 0 1em;">
+                            <p class="u-text3 u-text-align-center" style="max-width: 600px; padding: 0 2em;color:#777777;">
                                 Здесь вы можете предложить идеи для создания, обновления приложений, рассказать о багах,
                                 или оставить отзыв.
                             </p>
                             <form class="u__form" method="post" action="{% url 'ideas' %}">{% csrf_token %}
                                 <div class="u__fields">
                                     <label>
-                                        <textarea minlength="50" class="u__field" name="idea" rows="80" cols="80" style="
+                                        <textarea minlength="50" class="u__field u-text3" name="idea" rows="80" cols="80" style="
                                         min-width: 90%;
                                         max-width: 600px;
                                         min-height: 300px;
                                         padding: 1em;">{{ idea }}</textarea>
                                     </label>
-                                    <input class="u-submit2" type="submit" value="Send" style="margin: 0 !important;">
+                                    <input class="u-submit2 u-text3" type="submit" value="Send" style="margin: 0 !important;">
                                 </div>
                             </form>
                         </div>

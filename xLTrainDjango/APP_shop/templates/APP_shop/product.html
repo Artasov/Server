@@ -1,52 +1,115 @@
 {% extends 'index.html' %}
 {% load static %}
-{% block title %}xlartas | PAY{% endblock %}
+{% block title %}xlartas | {{ product.long_name }}{% endblock %}
 
 {% block content %}
     <div class="u">
-        <div class="u__container">
+        <div class="u__container  u-disable-tap-highlight">
             <div class="u__content" style="justify-content: center; gap: 40px;">
-                <div class="u__form" style="overflow-y: scroll; ">
-                    <style>
-                        .u__form::-webkit-scrollbar{
-                            width: 0;
-                        }
-                    </style>
+                <div class="u__form no_scrollbar" style="overflow-y: scroll; ">
                     <div class="u-help">
                         <div class="u__fields" style="padding-top: 40px;">
-                            <div class="__img-block">
-                                {% if name == 'xL Guild Manager' %}
-                                    <img class="-img" src="{% static 'shop/img/xLGM.png' %}" alt="">
-                                {% endif %}
-                                {% if name == 'xLUMRA' %}
-                                    <img class="-img" src="{% static 'shop/img/xLUMRA.png' %}" alt="">
-                                {% endif %}
-                                {% if name == 'xLCracker' %}
-                                    <img class="-img" src="{% static 'shop/img/xLCracker.png' %}" alt="">
-                                {% endif %}
+
+
+                            <div class="" style="display:flex;flex-direction: row; justify-content: center; gap: 2em;">
+                                <img src="{% static 'APP_shop/img/' %}{{ product.name }}.png" alt=""
+                                style="width: 14vmax; object-fit: contain;">
+
+                                <div style="display:flex; flex-direction: column; justify-content: center">
+                                    <p class="u-text8" style="text-align: center; line-height: 30px; padding-top: 15px; color: #f5f5f5; font-weight: 500;">
+                                        {{ product.long_name }} <span class="u-text3" style="color:#999999;"> v.{{ product.version }}</span><br>
+                                        <span class="sub_str1">{{ product.date_update }}</span>
+                                    </p>
+
+                                    <form action="{% url 'shop' %}"
+                                    class="product__buy-block hover1_1"
+                                    method="post"
+                                    style="
+                                    transform: scale(0.9);
+                                    margin-top: 1em;
+                                    ">{% csrf_token %}
+
+                                        <input type="submit" class="btn-buy u-text3" value="Buy" style="
+                                        padding: 0.5em 1.5em;">
+
+                                        <div class="price-block" style="
+                                        padding: 0.5em 1.6em 0.5em 1.5em;">
+                                            <p class="price u-text3">{{ product.price_week }}₽</p>
+                                        </div>
+
+                                        <input type="hidden" name="product" value="{{ product.name }}">
+                                    </form>
+                                </div>
                             </div>
-                            <p class="u-title" style="text-align: center; line-height: 30px; padding-top: 15px;">{{ name }}<br>
-                                <span class="sub_str1">{{ version }} {{ date_update }}</span></p>
-
-                            <p class="u-text" style="width: 90%; line-height: 1.3em; letter-spacing: 1px;">{{ desc }}</p>
 
 
-                            <iframe width="560" height="315" src="{{ review_ulr }}"
+                            <p class="u-text2 u-text-align-center" style="
+                            color: #aaaaaa;
+                            width: 70%;
+                            line-height: 1.3em;
+                            letter-spacing: 1px;">
+                                {{ product.desc }}
+                            </p>
+
+                            {% if product.review_ulr %}
+                            <iframe width="560" height="315" src="{{ product.review_ulr }}"
                                     title="YouTube video player" frameborder="0"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                     allowfullscreen style="max-width: 80vw; max-height: 45vw"></iframe>
+                            {% endif %}
 
-                            <form action="{% url 'shop' %}" method="post" class="product__buy-block">{% csrf_token %}
-                                <input type="submit" class="btn-buy" value="Buy">
-                                <div class="price-block">
-                                    <p class="price">{{ price_week }}₽</p>
-                                </div>
-                                <input type="hidden" name="product" value="{{ name }}">
-                            </form>
-
-                            {% for distr in distrs %}
-                                <a href="{% url 'download' distr.file%}" class="u-submit" style="color: #999999;">Download {{ distr.file_name }}</a>
+                            <div class="u__gfields" style="grid-template: 1fr / 1fr 1fr;">
+                            {% for distr in product.distrs.all %}
+                                <a href="{% url 'download' distr.file%}" class="u-submit u-text1 u-text-align-center" style="color: #999999;">Download {{ distr.file_name }}</a>
                             {% endfor %}
+                            </div>
+
+                            <p class="u-text10" style="color: #DDDDDD; text-align: left; font-weight: 500;">
+                                INSTALL
+                            </p>
+
+                            <p class="u-text1" style="
+                            color: #aaaaaa;
+                            width: 70%;
+                            line-height: 1.3em;
+                            letter-spacing: 1px;">
+                                &nbsp;&nbsp;&nbsp;&nbsp;Первым делом необходимо установить <span style="color: rgb(255,255,255);font-weight: 500;">OpenSSL(3kb)</span>.
+                                Ссылка выше. Если хотите можете сами
+                                поискать нужную версию - Win32OpenSSL_Light-1_1_1m
+                            </p>
+
+                            <p class="u-text1" style="
+                            color: #aaaaaa;
+                            width: 70%;
+                            line-height: 1.3em;
+                            letter-spacing: 1px;">
+                                &nbsp;&nbsp;&nbsp;&nbsp;Скачивайте <span style="color: rgb(255,0,59);font-weight: 500;">{{ product.long_name }}</span> и пользуйтесь! Гайд по использованию есть на видео и в программе(поищите:)).
+                                Если возникнут проблемы пишите в телегу <a href="https://t.me/xldeal" style="color: rgb(63,198,198);font-weight: 500;">@xldeal</a> отвечаю быстро.
+                            </p>
+
+                            <p class="u-text1" style="
+                            color: #aaaaaa;
+                            width: 70%;
+                            line-height: 1.3em;
+                            letter-spacing: 1px;">
+                                &nbsp;&nbsp;&nbsp;&nbsp;Если имеются проблемы убедитесь, что вы установили токен(/api dev) корректно, не всю ссылку, а сам токен.
+                            </p>
+
+
+                            <p class="u-text3" style="
+                            margin-top: 40px;
+                            font-weight: 600;
+                            color: #aaaaaa;
+                            align-self: flex-start;
+                            padding-left: 20%;">
+                                LOG
+                            </p>
+                            <p class="u-text1" style="
+                            color: #aaaaaa;
+                            width: 80%;
+                            max-width: 500px;">
+                                {{ product.log|safe }}
+                            </p>
 
                             <a href="{% url 'terms_and_conditions' %}" style="font-weight: 600; padding-top: 50px;" class="invalid">Terms
                                 And Conditions</a>
@@ -56,11 +119,4 @@
             </div>
         </div>
     </div>
-    <script>
-        window.addEventListener('load', function (e) {
-            document.getElementsByTagName('footer')[0].style.position = 'absolute';
-            document.getElementsByTagName('footer')[0].style.bottom = '0';
-            document.getElementsByTagName('footer')[0].style.left = '1%';
-        });
-    </script>
 {% endblock %}

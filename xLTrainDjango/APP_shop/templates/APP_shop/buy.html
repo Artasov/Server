@@ -1,54 +1,40 @@
 {% extends 'index.html' %}
 {%  load static %}
 
-{% block title %}xlartas | BUY{% endblock %}
+{% block title %}xlartas | {{ product.long_name }} BUY{% endblock %}
 
 {% block content %}
     <div class="u">
         <div class="u__container">
             <div class="u__content" style="justify-content: center; gap: 40px;">
-                <p class="u-title">{{ context.name }}</p>
+                <p class="u-text7 u-text-align-center" style="color: #F5F5F5; font-weight: 500">{{ product.long_name }}</p>
                 <form class="u__form" method="post" action="{% url 'buy' %}">{% csrf_token %}
                     <div class="u-help">
-                        {% if context.captcha_invalid %}
-                            <span class="invalid">{{ context.captcha_invalid }}</span>
+                        {% if captcha_invalid %}
+                            <span class="invalid">{{ captcha_invalid }}</span>
                         {% endif %}
-                        <div class="u__fields" style="gap: 10px; width: 100%;">
-                            <div class="u__field-radio u__field-radio-hover u__field-radio-active" onclick="radio_click(0)"><div class="radio-name"><span>Week</span></div><div class="radio-price"><span>{{ context.price_week }}₽</span></div></div>
-                            <div class="u__field-radio u__field-radio-hover" onclick="radio_click(1)"><div class="radio-name"><span>Month</span></div><div class="radio-price"><span>{{ context.price_month }}₽</span></div></div>
-                            <div class="u__field-radio u__field-radio-hover" onclick="radio_click(2)"><div class="radio-name"><span>Month x6</span></div><div class="radio-price"><span>{{ context.price_6_month }}₽</span></div></div>
-                            <div class="u__field-radio u__field-radio-hover" onclick="radio_click(3)"><div class="radio-name"><span>Forever</span></div><div class="radio-price"><span>{{ context.price_forever }}₽</span></div></div>
+                        {% if invalid %}
+                        <span class="invalid" style="padding: 0; margin: 0;">
+                            {{ invalid }}
+                        </span>
+                        {% endif %}
+                        <div class="u__fields" style="gap: 10px; width: 100%; max-width: 600px; margin-bottom: 20px;">
+                            <div class="u__field-radio hover1_05 u__field-radio-active" onclick="radio_click(0)"><div class="radio-name"><span>Week</span></div><div class="radio-price"><span>{{ product.price_week }}₽</span></div></div>
+                            <div class="u__field-radio hover1_05" onclick="radio_click(1)"><div class="radio-name"><span>Month</span></div><div class="radio-price"><span>{{ product.price_month }}₽</span></div></div>
+                            <div class="u__field-radio hover1_05" onclick="radio_click(2)"><div class="radio-name"><span>Month x6</span></div><div class="radio-price"><span>{{ product.price_6_month }}₽</span></div></div>
+                            <div class="u__field-radio hover1_05" onclick="radio_click(3)"><div class="radio-name"><span>Forever</span></div><div class="radio-price"><span>{{ product.price_forever }}₽</span></div></div>
                             <input name="price" id="price" type="hidden" value="price_week">
-                            <input name="product" id="product" type="hidden" value="{{ context.name }}">
-                            <style>
-                                .input_:hover{
-                                    border: 2px solid #ff5f6c !important;
-                                }
-                                .u__field-radio-hover:hover{
-                                    transform: scale(1.05);
-                                }
-                            </style>
+                            <input name="product" id="product" type="hidden" value="{{ product.name }}">
+                            <input name="promo_code" class="u__field u-text3 u-text-align-center" value="" placeholder="PROMO-CODE" style="text-transform: uppercase;">
                         </div>
+                        <input class="u-submit2" type="submit" value="Buy" style="margin: 20px 0 0 0 !important;">
                     </div>
-                    <input class="u-submit2" type="submit" value="Buy" style="margin: 0 !important;">
 
                 </form>
             </div>
         </div>
     </div>
     <script>
-        let inputs = document.getElementsByClassName('u__field');
-        for (let i = 0; i < inputs.length; i++){
-            inputs[i].addEventListener('blur', function (e) {
-                if(inputs[i].value !== ''){
-                    inputs[i].style.borderColor = '#ff5f6c';
-                }
-                else{
-                    inputs[i].style.borderColor = 'rgba(244, 247, 245, 0.7)';
-                }
-            })
-        }
-
         function radio_click(index) {
             let radio = document.getElementsByClassName('u__field-radio');
             for (let i = 0; i < radio.length; i++){
@@ -66,6 +52,7 @@
             }
             if(index === 3){
                 document.getElementById('price').value = 'price_forever';
+                
             }
         }
 
@@ -77,15 +64,10 @@
             if(document.getElementsByTagName('body')[0].classList.contains('_touch')){
                 el2.setAttribute("data-size", "compact")
             }
-            el2.setAttribute("data-sitekey", "{{ context.RECAPTCHA_KEY }}");
+            el2.setAttribute("data-sitekey", "{{ RECAPTCHA_KEY }}");
             el2.classList.add('g-recaptcha');
             for_insert.before(el);
             for_insert.before(el2);
         });
-    </script>
-    <script>
-         window.addEventListener('load', function(e) {
-             document.getElementsByTagName('footer')[0].style.display = 'none';
-         });
     </script>
 {% endblock %}

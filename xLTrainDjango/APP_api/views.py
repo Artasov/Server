@@ -1,4 +1,9 @@
-from django.http import HttpResponse
+import json
+from datetime import datetime
+
+from django.contrib.auth import authenticate
+from django.shortcuts import redirect
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
@@ -6,6 +11,8 @@ from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 from rest_framework.views import APIView
 
 from APP_home.models import User
+from APP_shop.models import Products, Licenses
+from params_and_funcs import log
 from xLTrainDjango.xLLIB_v1 import random_str
 from .serializers import UserSerializer
 
@@ -15,9 +22,7 @@ class UserAPIView(APIView):
     throttle_classes = [UserRateThrottle, AnonRateThrottle]
 
     def get(self, request):
-        print(1)
         all_users = User.objects.all()
-        print(2)
         return Response({'users': UserSerializer(all_users, many=True).data})
 
 
@@ -32,14 +37,6 @@ class UserAPIViewByName(APIView):
             return Response({'error': f'User with name {name} does not exist'})
 
         return Response({name: UserSerializer(user, many=True).data})
-
-
-@api_view(['GET'])
-def RekrutoTask(request):
-    throttle_classes = [UserRateThrottle, AnonRateThrottle]
-    params = dict(request.GET)
-    # return Response({'response': f'Hello {params["name"][0]}! {params["message"][0]}'})
-    return HttpResponse(f'Hello {params["name"][0]}!<br>{params["message"][0]}')
 
 
 @api_view(['GET'])
@@ -84,3 +81,77 @@ def RandomStrAPIView(request):
             "response": 'ERROR. Check if the request belongs to a template: http://xxx.xx/random_str?length=int&alphabet=x&repete=bool&upper=bool&digits=bool. For more information, see the documentation on the xlartas website.'})
 
     return Response({"response": rand_strs_list})
+
+
+@csrf_exempt
+@api_view(['POST'])
+def ProgramAuth(request):
+    throttle_classes = [UserRateThrottle, AnonRateThrottle]
+    if request.method == "POST":
+        json_date = list(dict(request.POST).keys())[0]
+        data = dict(json.loads(json_date))
+        user = authenticate(request, username=data['username'], password=data['password'])
+        if user is not None:
+            FIRST = False
+            user = User.objects.get(username=data['username'])
+            if user.HWID is None:
+                user.HWID = data['HWID']
+                user.save()
+                FIRST = True
+            else:
+                if data['HWID'] != user.HWID:
+                    return Response({'accept': False, 'error': 'HWID_ERR'},
+                                    headers={'Content-Type': 'application/json'})
+
+            product = Products.objects.get(name=data['product'])
+            user_license = Licenses.objects.filter(username=user, product=product)
+            DATE_LICENSE = user_license.first().date_end
+            DATE_NOW = datetime.utcnow()
+            if DATE_LICENSE > DATE_NOW:
+                return Response({'accept': True, 'HWID': user.HWID, 'FIRST': FIRST},
+                                headers={'Content-Type': 'application/json'})
+
+            return Response({'accept': False, 'error': 'License timeout'},
+                            headers={'Content-Type': 'application/json'})
+        else:
+            return Response({'accept': False, 'error': 'Login or password\n invalid'},
+                            headers={'Content-Type': 'application/json'})
+    else:
+        return Response({'accept': False, 'error': 'Invalid request'}, headers={'Content-Type': 'application/json'})
+
+
+@csrf_exempt
+@api_view(['POST'])
+def SetHWID(request):
+    throttle_classes = [UserRateThrottle, AnonRateThrottle]
+    if request.method == "POST":
+        json_date = list(dict(request.POST).keys())[0]
+        data = dict(json.loads(json_date))
+        user = authenticate(request, username=data['username'], password=data['password'])
+        if user is not None:
+            user = User.objects.get(username=data['username'])
+
+            user.HWID = data['HWID']
+            user_licenses = Licenses.objects.filter(username=user)
+            for license_ in user_licenses:
+                license_.date_end = datetime.utcnow()
+                license_.save()
+            user.save()
+            return Response({'accept': True, },
+                            headers={'Content-Type': 'application/json'})
+
+        else:
+            return Response({'accept': False, 'error': 'Login or pass invalidы'},
+                            headers={'Content-Type': 'application/json'})
+    else:
+        return Response({'accept': False, 'error': 'Something go wrong'}, headers={'Content-Type': 'application/json'})
+
+
+@api_view(['GET'])
+def ProductVersion(request, product):
+    throttle_classes = [UserRateThrottle, AnonRateThrottle]
+    if Products.objects.filter(name=product).exists():
+        product = Products.objects.get(name=product)
+        return Response({'version': product.version}, headers={'Content-Type': 'application/json'})
+    else:
+        return Response('Product does not exist.', headers={'Content-Type': 'application/json'})

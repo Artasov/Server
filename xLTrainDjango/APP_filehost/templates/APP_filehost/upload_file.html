@@ -1,0 +1,262 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load sass_tags %}
+{% load APP_filehost_tags %}
+
+{% block title %}xlartas | FILE HOSTING{% endblock %}
+
+{% block link_content_css %}
+    <link href="{% sass_src 'css/filehost.sass' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+    <div class="u">
+        <div class="u__container">
+            <div class="u__content" style="justify-content: center; gap: 40px;">
+                <div class="u__form no_scrollbar" style="overflow-y: scroll">
+                    <div class="u-help u-disable-tap-highlight" style="">
+                        <form class="u__fields " style="width: 100%;" method="post" enctype="multipart/form-data"
+                              action="{% url 'upload_file' %}">{% csrf_token %}
+                            <p class="u-text6 u-text-align-center" style="
+                            letter-spacing: 0.1em;
+                            color: #F5F5F5;
+                            font-weight: 500">
+                                FILE HOSTING
+                            </p>
+
+                            {% if invalid %}
+                            <span class="invalid files_too_big">
+                                {{ invalid }}
+                            </span>
+                            {% endif %}
+
+                            <label class="drop-zone">
+                                <p class="u-text6 u-text-align-center" style="
+                                font-weight: 600;
+                                letter-spacing: 0.2em;
+                                color: #454545;">
+                                    Drop the files
+                                </p>
+                            </label>
+                            <p class="u-submit2 btn_add_file" style="padding: 0.6em 1.2em 0.6em 1em">
+                                +Files
+                            </p>
+
+                            <span class="u-text2" id="size" style="font-weight: 400; color: #AAAAAA; display: none;">
+
+                            </span>
+
+                            <span class="invalid invalid-size files_too_big" style="display: none;">
+                                {% if user.is_authenticated %}
+                                The size of uploaded files should not exceed {% diff DEFINED_SIZE 1048576 type_returned=2 %} MB.
+                                {% else %}
+                                The size of uploaded files should not exceed {% diff DEFINED_SIZE 1048576 %} MB. Register to increase the limit to 30 MB.
+                                {% endif %}
+                            </span>
+
+                            <div class="img-view-zone"></div>
+                            <div class="file-view-zone"></div>
+
+                            <input style="display: none" type="file" multiple="multiple" name="files[]" value=""
+                                   id="files">
+                            <input class="u-submit2 captcha" type="submit" value="Upload"
+                                   style="margin: 0 0 10px 0 !important;">
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+
+
+        var FILES = []
+
+        function highlightDropZone(event) {
+            event.preventDefault();
+            this.classList.add('drop');
+        }
+
+        function unHighlightDropZone(event) {
+            event.preventDefault();
+            this.classList.remove('drop');
+        }
+
+        var drop_zone = document.getElementsByClassName('drop-zone')[0];
+        drop_zone.addEventListener('dragover', highlightDropZone);
+        drop_zone.addEventListener('dragenter', highlightDropZone);
+        drop_zone.addEventListener('dragleave', unHighlightDropZone);
+        drop_zone.addEventListener('drop', (event) => {
+            const dt = event.dataTransfer;
+            unHighlightDropZone.call(drop_zone, event);
+            if (dt.files && dt.files.length) {
+                for (let i = 0; i < dt.files.length; i++) {
+                    FILES.push(dt.files[i]);
+                }
+                UpdateViewZone();
+            } else {
+                log("nothing");
+            }
+        });
+
+        var uploadField = document.getElementById("files");
+        var img_zone = document.getElementsByClassName('img-view-zone')[0];
+        var file_zone = document.getElementsByClassName('file-view-zone')[0];
+
+        function UpdateViewZone() {
+            let total_files_size = 0;
+            let list = new DataTransfer();
+            let count_img = 0;
+            let count_row_img_zone = 1;
+            let count_column_img_zone = 0;
+            if (FILES.length!==0){
+                img_zone.style.display = 'grid';
+                file_zone.style.display = 'flex';
+            }
+            else{
+                img_zone.style.display = 'none';
+                file_zone.style.display = 'none';
+            }
+            img_zone.innerHTML = "";
+            file_zone.innerHTML = "";
+            for (let i = 0; i < FILES.length; i++) {
+                list.items.add(FILES[i]);
+                total_files_size += FILES[i].size;
+                //if file is image
+                if (FILES[i].name.indexOf('.png') !== -1 ||
+                    FILES[i].name.indexOf('.jpg') !== -1 ||
+                    FILES[i].name.indexOf('.jpeg') !== -1 ||
+                    FILES[i].name.indexOf('.webp') !== -1 ||
+                    FILES[i].name.indexOf('.svg') !== -1 ||
+                    FILES[i].name.indexOf('.bmp') !== -1) {
+                    let img = document.createElement('img');
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        img.setAttribute('src', e.target.result);
+                    };
+                    reader.readAsDataURL(FILES[i]);
+                    img.classList.add('img-el');
+                    img.classList.add('hover1_1');
+
+                    let btn_img_del_block = document.createElement('div');
+                    btn_img_del_block.classList.add('btn-img-del-block');
+                    let btn_img_del = document.createElement('img');
+                    btn_img_del.classList.add('btn-img-del');
+                    btn_img_del.src = '{% static 'img/delete.png' %}';
+                    btn_img_del.addEventListener('click', function (e) {
+                        FILES.splice(i, 1);
+                        UpdateViewZone();
+                    });
+                    btn_img_del_block.append(btn_img_del);
+
+
+                    let img_block = document.createElement('div');
+                    img_block.classList.add('img_block');
+
+                    img_block.append(img);
+                    img_block.append(btn_img_del_block);
+
+                    img_block.addEventListener('click', function (e) {
+                        img_block.classList.toggle('opened_img');
+                        img.classList.toggle('abosulte_center');
+                        btn_img_del.classList.toggle('display_none');
+                    });
+
+                    //resize grid
+                    count_img++;
+                    if (count_img > 4) {
+                        count_row_img_zone = ((count_img - count_img % 4) / 4);
+                        count_column_img_zone = 4;
+                    } else {
+                        count_column_img_zone = count_img;
+                    }
+                    img_zone.style.gridTemplate = '1fr '.repeat(count_row_img_zone) + '/ ' + '1fr '.repeat(count_column_img_zone);
+
+                    img_zone.prepend(img_block);
+
+                } else {
+                    let file_el = document.createElement('div');
+                    file_el.classList.add('file-el');
+
+                    let file_name_block = document.createElement('div');
+                    file_name_block.classList.add('file-name-block');
+                    let file_size_block = document.createElement('div');
+                    file_size_block.classList.add('file-size-block');
+                    let btn_file_del_block = document.createElement('div');
+                    btn_file_del_block.classList.add('btn-file-del-block');
+
+                    let file_name = document.createElement('span');
+                    file_name.classList.add('file-name');
+                    file_name.classList.add('u-text2');
+                    file_name.classList.add('u-text-align-center');
+                    file_name.innerHTML = FILES[i].name;
+                    let file_size = document.createElement('span');
+                    file_size.classList.add('file-size');
+                    file_size.classList.add('u-text2');
+                    file_size.classList.add('u-text-align-center');
+                    file_size.innerHTML = (FILES[i].size / 1024 / 1024).toFixed(3) + " MB";
+                    let btn_file_del = document.createElement('img');
+                    btn_file_del.classList.add('btn-file-del');
+                    btn_file_del.src = '{% static 'img/delete.png' %}';
+                    btn_file_del.addEventListener('click', function (e) {
+                        FILES.splice(i, 1);
+                        UpdateViewZone();
+                    });
+
+                    file_name_block.append(file_name);
+                    file_size_block.append(file_size);
+                    btn_file_del_block.append(btn_file_del);
+
+                    file_el.append(file_name_block);
+                    file_el.append(file_size_block);
+                    file_el.append(btn_file_del_block);
+
+                    file_zone.prepend(file_el);
+                }
+            }
+            uploadField.files = list.files;
+            if(total_files_size > {{ DEFINED_SIZE }}){
+                document.getElementsByClassName('files_too_big')[0].style.display = 'inline';
+            }
+            else{
+                document.getElementsByClassName('files_too_big')[0].style.display = 'none';
+            }
+
+            if (total_files_size !== 0){
+                document.getElementById('size').innerHTML =
+                    'Size: ' + (total_files_size/1024/1024).toFixed(3) + ' MB';
+                document.getElementById('size').style.display = 'inline';
+            }
+            else{
+                document.getElementById('size').innerHTML = "";
+                document.getElementById('size').style.display = 'none';
+            }
+        }
+
+        // limiting upload
+
+        uploadField.onchange = function () {
+            for (let i = 0; i < this.files.length; i++) {
+                FILES.push(this.files[i]);
+            }
+            UpdateViewZone();
+        };
+        document.getElementsByClassName('btn_add_file')[0].addEventListener('click', function () {
+            uploadField.click();
+        });
+        window.addEventListener('load', function (e) {
+            var for_insert = document.getElementsByClassName('captcha')[0];
+            var el = document.createElement('script');
+            el.setAttribute('src', 'https://www.google.com/recaptcha/api.js');
+            var el2 = document.createElement('div');
+            if (document.getElementsByTagName('body')[0].classList.contains('_touch')) {
+                el2.setAttribute("data-size", "normal");
+            }
+            el2.setAttribute("data-sitekey", "{{ RECAPTCHA_KEY }}");
+            el2.classList.add('g-recaptcha');
+            for_insert.before(el);
+            for_insert.before(el2);
+        });
+    </script>
+{% endblock %}

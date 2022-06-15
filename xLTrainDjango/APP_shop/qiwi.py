@@ -3,10 +3,13 @@ import os
 import requests
 
 
-def create_bill(value, product, license_time, billid, username):
+def create_bill(value, product, license_time, promo, billid, username):
     SECRET_KEY = os.getenv('QIWI_SECRET_KEY')
     now = datetime.now()
     ex_date = now + timedelta(minutes=10)
+
+    if promo == '':
+        promo = 'NONE'
 
     headers = {'Authorization': f'Bearer {SECRET_KEY}',
                'Accept': 'application/json',
@@ -19,7 +22,8 @@ def create_bill(value, product, license_time, billid, username):
               'expirationDateTime': f'{ex_date.strftime("%Y-%m-%dT%H:%MZ")}',
               'customer': {},
               'customFields': {'product': product,
-                               'license_time': license_time},
+                               'license_time': license_time,
+                               'promo': promo},
               }
 
     g = requests.put(f'https://api.qiwi.com/partner/bill/v1/bills/{billid}',

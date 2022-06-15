@@ -1,27 +1,23 @@
 <header class="header">
 	<div class="header__container">
-		<a href="{% url 'home' %}" class="header__logo-block">
-			<img src="" class="header__logo">
+		<a href="{% url 'home' %}" class="header__logo-block u-disable-tap-highlight">
+			<img src="" class="header__logo u-disable-tap-highlight">
 		</a>
         {% if not header_logo_only %}
 		<ul class="header__menu">
 			<div class="header__menu-pc">
                 {% if user.is_authenticated %}
-				    <a href="{% url 'profile' %}" class="header__menu-el"><li>{{ user.get_username }} LK</li></a>
+				    <a href="{% url 'profile' %}" class="header__menu-el u-disable-tap-highlight"><li>{{ user.get_username }} LK</li></a>
                 {% endif %}
-				<a href="{% url 'shop' %}" class="header__menu-el"><li>SHOP</li></a>
-                <a href="{% url 'about' %}" class="header__menu-el"><li>ABOUT</li></a>
-                <a href="{% url 'donate' %}" class="header__menu-el"><li>DONATE</li></a>
-                {% if user.is_authenticated %}
-                <a href="{% url 'ideas' %}" class="header__menu-el"><li>iDEAS</li></a>
-                {% endif %}
+				<a href="{% url 'shop' %}" class="header__menu-el u-disable-tap-highlight"><li>SHOP</li></a>
+                <a href="{% url 'more' %}" class="header__menu-el u-disable-tap-highlight"><li>MORE</li></a>
 			</div>
 			<ul class="header__login-reg">
                 {% if user.is_authenticated %}
-				    <a href="{% url 'logout' %}" style="display: flex" class="header__login-reg-el btn_log" on><li>Sign out</li></a>
+				    <a href="{% url 'logout' %}" style="display: flex" class="header__login-reg-el btn_log u-disable-tap-highlight" on><li>Sign out</li></a>
                 {% else %}
-				    <a href="{% url 'login' %}" style="display: flex" class="header__login-reg-el btn_log" on><li>Sign in</li></a>
-				    <div class="header__login-reg-el btn_reg"><li>Register</li></div>
+				    <a href="{% url 'login' %}" style="display: flex" class="header__login-reg-el btn_log u-disable-tap-highlight" on><li>Sign in</li></a>
+				    <a href="{% url 'registration' %}" style="display: flex" class="header__login-reg-el btn_log u-disable-tap-highlight" on><li>Register</li></a>
                 {% endif %}
 			</ul>
 		</ul>

@@ -8,17 +8,19 @@
         <div class="u__container">
             <div class="u__content">
                 <form class="u__form" method="post" action="{% url 'donate' %}">{% csrf_token %}
+                    <p class="u-text6 u-text-align-center" style="color: #F5F5F5; font-weight: 500">DONATE</p>
                     <div class="u-help">
                         {% if invalid %}
                             <span class="invalid">{{ invalid }}</span>
                         {% endif %}
-                        <div class="u__fields">
-                            <input name="value" type="number" placeholder="Value RUB" class="u__field">
-                            <input name="comment" type="text" placeholder="Comment" class="u__field">
+                        <div class="u__fields" style="padding-bottom: 20px;">
+                            <input name="value" type="number" placeholder="Value RUB" class="u__field u-text3">
+                            <input name="comment" type="text" placeholder="Comment" class="u__field u-text3">
                         </div>
+                        <input class="u-submit u-text3" type="submit" value="Donate" style="margin-top: 20px;">
                     </div>
 
-                    <input class="u-submit" type="submit" value="Donate">
+
                 </form>
             </div>
         </div>
@@ -48,13 +50,6 @@
             for_insert.before(el);
             for_insert.before(el2);
         });
-    </script>
-    <script>
-         window.addEventListener('load', function(e) {
-             document.getElementsByTagName('footer')[0].style.position = 'absolute';
-             document.getElementsByTagName('footer')[0].style.bottom = '0';
-             document.getElementsByTagName('footer')[0].style.left = '1%';
-         });
     </script>
 
 {% endblock %}

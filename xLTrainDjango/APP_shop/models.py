@@ -1,12 +1,14 @@
 from datetime import datetime
 
+from django.conf import settings
 from django.db import models
-from APP_home.models import File
+from APP_home.models import File, User
 
 
 class Products(models.Model):
     name = models.CharField(max_length=50, blank=True)
-    version = models.CharField(max_length=30, default=None)
+    long_name = models.CharField(max_length=50, blank=True)
+    version = models.IntegerField(default=1)
     desc = models.TextField(blank=True)
     review_ulr = models.CharField(max_length=200, null=True, blank=True)
 
@@ -14,6 +16,8 @@ class Products(models.Model):
     price_month = models.IntegerField(null=True, blank=True)
     price_6_month = models.IntegerField(null=True, blank=True)
     price_forever = models.IntegerField(null=True, blank=True)
+
+    log = models.TextField(blank=True, null=True)
 
     date_update = models.DateTimeField(default=datetime.now)
 
@@ -23,20 +27,13 @@ class Products(models.Model):
         return f'{self.name}'
 
 
-class UserLicense(models.Model):
-    username = models.CharField(max_length=150)
+class Licenses(models.Model):
+    username = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    date_end = models.DateTimeField(blank=True, null=True, default=datetime.utcnow)
 
-    xLGM_date_end = models.DateTimeField(blank=True, null=True, default=datetime.now)
-    xLGM_count = models.IntegerField(default=0)
-
-    xLUMRA_date_end = models.DateTimeField(blank=True, null=True, default=datetime.now)
-    xLUMRA_count = models.IntegerField(default=0)
-
-    xLCracker_date_end = models.DateTimeField(blank=True, null=True, default=datetime.now)
-    xLCracker_count = models.IntegerField(default=0)
-
-    billid = models.CharField(max_length=15, blank=True, null=True)
-    pay_link = models.CharField(max_length=150, blank=True)
+    count = models.IntegerField(default=0)
+    product_money = models.IntegerField(default=0)
 
     def __str__(self):
-        return f'{self.username}'
+        return f'{self.username} - {self.product}'

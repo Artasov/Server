@@ -1,0 +1,46 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}xlartas | FILE HOSTING{% endblock %}
+
+
+{% block content %}
+<div class="u">
+    <div class="u__container">
+        <div class="u__content" style="justify-content: center; gap: 40px;">
+            <div class="u__form no_scrollbar" style="overflow-y: scroll">
+                <div class="u-help u-disable-tap-highlight" style="">
+                    <div class="u__fields " style="width: 100%;">
+                        <p class="u-text6 u-text-align-center" style="
+                            letter-spacing: 0.1em;
+                            color: #F5F5F5;
+                            font-weight: 500">
+                            FILE HOSTING
+                        </p>
+                        <span class="success copied" style="display: none;">Copied</span>
+                        <p class="u-text3"
+                           style="max-width: 600px; padding: 0 1em; line-height: 1.2em; color: #5fff5f;">
+                            Link to view the upload
+                        </p>
+                        <p class="u-text2 link_for_copy"
+                           style="color: #aaaaaa;user-select: text; max-width: 40%; word-wrap:break-word;">
+                            {{ link }}
+                        </p>
+
+                        <button class="u-submit2 copy_link">COPY</button>
+                        <a href="{% url 'upload_file' %}" class="u-submit" style="margin-bottom: 10px;">Upload
+                            new</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    let copy_btn = document.getElementsByClassName('copy_link')[0];
+    copy_btn.addEventListener('click', function (e) {
+        navigator.clipboard.writeText(document.getElementsByClassName('link_for_copy')[0].innerHTML);
+        document.getElementsByClassName('copied')[0].style.display = 'inline';
+    })
+</script>
+{% endblock %}

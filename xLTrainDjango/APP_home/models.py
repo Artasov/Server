@@ -12,21 +12,25 @@ class User(AbstractUser):
     # first_name уже существует
     # last_name уже существует
     # password уже существует
-    nickname = models.CharField(max_length=25, blank=True)
-    guild = models.CharField(max_length=25, blank=True)
-    gender = models.CharField(max_length=1, blank=True)
     HWID = models.CharField(max_length=50, blank=True, null=True, default=None)
+
+    billid = models.CharField(max_length=15, blank=True, null=True)
+    pay_link = models.CharField(max_length=150, blank=True)
+
+    money = models.IntegerField(default=0)
+
+    promo_used = models.TextField(default="")
+
     date_joined = models.DateTimeField(default=datetime.now)
 
     def __str__(self):
-        return f'{self.username}, {self.nickname}, {self.email}, {self.gender}'
+        return f'{self.username}, {self.email}'
 
 
 class UnconfirmedUser(models.Model):
     username = models.CharField(max_length=50, blank=True)
     password = models.CharField(max_length=250, blank=True)
     email = models.EmailField(max_length=320, blank=True)
-    gender = models.CharField(max_length=1, blank=True)
     CODE = models.CharField(max_length=50, blank=True, null=True, default=None)
     date = models.DateTimeField(blank=True, null=True, default=datetime.now)
 

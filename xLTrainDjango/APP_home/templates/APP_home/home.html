@@ -5,72 +5,134 @@
 {% block title %}xlartas{% endblock %}
 
 {% block link_content_css %}
-    <link href="{% sass_src 'home/css/main_home.sass' %}" rel="stylesheet" type="text/css">
+    <link href="{% sass_src 'APP_home/css/main_home.sass' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 
 {% block content %}
-    {% include 'includes/main_home.html' %}
+<main class="main">
+	<div class="main__container">
+		<div class="main__content-border">
+			<div class="main__content">
 
-    {% if registration_fail %}
-        <script>
-            window.addEventListener('load', function(e) {
-                document.getElementsByClassName('menu__burger-btn')[0].click();
-                document.getElementsByClassName('btn_reg')[0].click();
-                document.getElementsByClassName('warning')[0].getElementsByTagName('label')[0].innerHTML =
-                    '<img src="" alt="" class="close-icon-reg-warning" onclick="close_warning();"><p style="padding-top:20px;padding-bottom:20px;" class="warning-title">A user with <span class="warning-var">' +
-                    {% if username_fail %}
-                        '{{ username_fail }}' + '</span> name' +
-                    {% endif %}
-                    {% if email_fail %}
-                        '{{ email_fail }}' + '</span> email' +
-                    {% endif %}
-                    ' already exists</p>';
-                document.getElementsByClassName('warning')[0].style.bottom = '0px';
-                document.getElementsByClassName('close-icon-reg-warning')[0].src = '{% static '/img/close.png' %}';
-            });
-        </script>
-    {% endif %}
-    {% if form_invalid %}
-        <script>
-            window.addEventListener('load', function(e) {
-                document.getElementsByClassName('menu__burger-btn')[0].click();
-                document.getElementsByClassName('btn_reg')[0].click();
-                document.getElementsByClassName('warning')[0].getElementsByTagName('label')[0].innerHTML =
-'<img src="" alt="" class="close-icon-reg-warning" onclick="close_warning();">'+
-'<p style="padding-top:20px;padding-bottom:20px;" class="warning-title">'+
-                    'The fields <span class="warning-var">' +
-                        '{{ form_invalid }}' + '</span> are incorrectly filled in.' +
-                    '</p>' +
-                '<p class="warning-text">'+
-                    {% for i in error_msgs.values %}
-                        '{{ i|escapejs }}<br><br>'+
-                    {% endfor %}
-                '</p>';
-                document.getElementsByClassName('warning')[0].style.bottom = '0px';
-                document.getElementsByClassName('close-icon-reg-warning')[0].src = '{% static '/img/close.png' %}';
-            });
-        </script>
-    {% endif %}
-    {% if captcha_invalid %}
-        <script>
-            window.addEventListener('load', function(e) {
-                document.getElementsByClassName('menu__burger-btn')[0].click();
-                document.getElementsByClassName('btn_reg')[0].click();
-                document.getElementsByClassName('warning')[0].getElementsByTagName('label')[0].innerHTML =
-'<img src="" alt="" class="close-icon-reg-warning" onclick="close_warning();">'+
-'<p style="padding-top:20px;padding-bottom:20px;" class="warning-title">'+
-                    '<span class="warning-var">' +
-                        '{{ captcha_invalid }}' +
-                    '</p>';
-                document.getElementsByClassName('warning')[0].style.bottom = '0px';
-                document.getElementsByClassName('close-icon-reg-warning')[0].src = '{% static '/img/close.png' %}';
-            });
-        </script>
-    {% endif %}
-    <script>
-         window.addEventListener('load', function(e) {
-             document.getElementsByTagName('footer')[0].style.display = 'none';
-         });
-    </script>
+				<div class="main__content-ava-block">
+					<img src="" alt="" class="main__content-ava">
+				</div>
+
+
+				<div class="info">
+					<p class="info-nick">xlartas</p>
+					<p class="info-name">Nikita Artasov</p>
+
+
+					<div class="links">
+						<a href="https://t.me/xldeal" class="fab fa-telegram u-disable-tap-highlight" aria-hidden="true"></a>
+                        <a href="mailto:xl@xlartas.ru" target="_blank" class="fas fa-envelope u-disable-tap-highlight" aria-hidden="true"></a>
+
+					</div>
+
+{#  				<h2>SERVICE</h2>#}
+{#					<div class="info__el">#}
+{#						<div class="info__el-description">#}
+{#							<p class="info__el-description-name">#}
+{#								Web-Development#}
+{#								<i class="fas fa-chevron-down ico-up-down"></i>#}
+{#							</p>#}
+{#							<p class="info__el-description-text">&nbsp;&nbsp;&nbsp;&nbsp;Development of websites of any orientation – single-pages, multi-pages, shops, portals, personal blogs, landing pages. A unique design or the use of a ready-made template of your choice. Layout and audit, work testing. if necessary, integration with third-party infos. As a result – a modern website, search engines and users will love it, with a user-friendly interface, good navigation, technically reliable.</p>#}
+{#						</div>#}
+{#						<div class="info__el-table">#}
+{#							<div class="info__el-table-el">#}
+{#								<p class="info__el-table-el-description">Front-end dev.</p>#}
+{#							</div>#}
+{#							<div class="info__el-table-el">#}
+{#								<div>#}
+{#									<p class="info__el-table-el-price">15$+</p>#}
+{#								</div>#}
+{#							</div>#}
+{#                            <div class="info__el-table-el">#}
+{#								<p class="info__el-table-el-description">PSD2HTML</p>#}
+{#							</div>#}
+{#							<div class="info__el-table-el">#}
+{#								<div>#}
+{#									<p class="info__el-table-el-price">10$+</p>#}
+{#								</div>#}
+{#							</div>#}
+{#							<div class="info__el-table-el">#}
+{#								<p class="info__el-table-el-description">Back-end (Django only)</p>#}
+{#							</div>#}
+{#							<div class="info__el-table-el">#}
+{#								<div>#}
+{#									<p class="info__el-table-el-price">17$+</p>#}
+{#								</div>#}
+{#							</div>#}
+{#						</div>#}
+{#					</div>#}
+{#					<div class="info__el">#}
+{#						<div class="info__el-description">#}
+{#							<p class="info__el-description-name">#}
+{#								Desktop-<br>development#}
+{#								<i class="fas fa-chevron-down ico-up-down"></i>#}
+{#							</p>#}
+{#							<p class="info__el-description-text">&nbsp;&nbsp;&nbsp;&nbsp;Development of applications for a Windows computer. GUI APPS with C++ or Python framework QT. Also work with external APIs, WinAPI, bd parsing, exel, etc. Automation of processes on a PC.</p>#}
+{#						</div>#}
+{#						<div class="info__el-table">#}
+{#							<div class="info__el-table-el">#}
+{#								<p class="info__el-table-el-description">С++ QT Static build</p>#}
+{#							</div>#}
+{#							<div class="info__el-table-el">#}
+{#								<div>#}
+{#									<p class="info__el-table-el-price">30$+</p>#}
+{#								</div>#}
+{#							</div>#}
+{#							<div class="info__el-table-el">#}
+{#								<p class="info__el-table-el-description">С++ QT</p>#}
+{#							</div>#}
+{#							<div class="info__el-table-el">#}
+{#								<div>#}
+{#									<p class="info__el-table-el-price">25$+</p>#}
+{#								</div>#}
+{#							</div>#}
+{#							<div class="info__el-table-el">#}
+{#								<p class="info__el-table-el-description">Python QT</p>#}
+{#							</div>#}
+{#							<div class="info__el-table-el">#}
+{#								<div>#}
+{#									<p class="info__el-table-el-price">25$+</p>#}
+{#								</div>#}
+{#							</div>#}
+{#							<div class="info__el-table-el">#}
+{#								<p class="info__el-table-el-description">Python</p>#}
+{#							</div>#}
+{#							<div class="info__el-table-el">#}
+{#								<div>#}
+{#									<p class="info__el-table-el-price">10$+</p>#}
+{#								</div>#}
+{#							</div>#}
+{#						</div>#}
+{#					</div>#}
+{#					<div class="info__el">#}
+{#						<div class="info__el-description">#}
+{#							<p class="info__el-description-name">#}
+{#								Other#}
+{#							</p>#}
+{#						</div>#}
+{#						<div class="info__el-table">#}
+{#							<div class="info__el-table-el">#}
+{#								<p class="info__el-table-el-description">Individual consultation on any issue.</p>#}
+{#							</div>#}
+{#							<div class="info__el-table-el">#}
+{#								<div>#}
+{#									<p class="info__el-table-el-price">15$ / Hour</p>#}
+{#								</div>#}
+{#							</div>#}
+{#						</div>#}
+{#						<p class="info__el-table-el-price" style="text-align: center; padding: 20px 0px 0px 0px;">Ask for the rest in messages on gmail, telegram or vk.</p>#}
+{#					</div>#}
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+</main>
 {% endblock %}

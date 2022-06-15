@@ -7,13 +7,13 @@ from .models import User, UnconfirmedUser, UnconfirmedPasswordReset, File, Idea
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['username', 'nickname', 'guild', 'gender', 'HWID', 'date_joined']
-    list_editable = ['nickname', 'guild', 'gender', 'HWID']
+    list_display = ['username', 'email', 'money', 'promo_used', 'HWID', 'pay_link']
+    list_editable = ['email', 'money', 'HWID', 'pay_link']
 
 
 @admin.register(UnconfirmedUser)
 class UnconfirmedUserAdmin(admin.ModelAdmin):
-    list_display = ['username', 'email', 'gender']
+    list_display = ['username', 'email']
 
 
 @admin.register(UnconfirmedPasswordReset)

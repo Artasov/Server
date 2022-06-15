@@ -1,0 +1,135 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load sass_tags %}
+{% load APP_filehost_tags %}
+
+{% block title %}xlartas | FILE HOSTING{% endblock %}
+
+{% block link_content_css %}
+    <link href="{% sass_src 'css/filehost.sass' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+<div class="u">
+    <div class="u__container">
+        <div class="u__content" style="justify-content: center; gap: 40px;">
+            <div class="u__form no_scrollbar" style="overflow-y: scroll">
+                <div class="u-help u-disable-tap-highlight" style="">
+                    <div class="u__fields " style="width: 100%;">
+                        <p class="u-text6 u-text-align-center" style="
+                            letter-spacing: 0.1em;
+                            color: #F5F5F5;
+                            font-weight: 500">
+                            FILE HOSTING
+                        </p>
+
+                        <div class="u__fields u-text2" style="font-weight: 400; color: #AAAAAA; gap:5px;">
+                            <span>Author: {{ upload.username.username }}</span>
+                            <span>Size: {{ total_size }} MB</span>
+                            <span>Delete: {{ delete_in }} hours</span>
+                        </div>
+                    
+                    
+                        <div class="u-submit2 u-text1" id="btn_download_all" style="padding: 0.4em 0.9em; border-radius: 7px">
+                            download all
+                        </div>
+
+                        {% if author %}
+                        <a class="u-submit u-text1" id="btn_download_all" href="{% url 'del_upload' upload.id %}"
+                           style="padding: 0.4em 0.9em; border-radius: 7px; background-color: rgb(255,0,42);">
+                            DELETE
+                        </a>
+                        {% endif %}
+
+                        <div class="img-view-zone">
+                        {% for file in files %}
+                        {% if '.png' in file.file_name or '.jpg' in file.file_name or '.jpeg' in file.file_name or '.webp' in file.file_name or '.svg' in file.file_name %}
+                            <div class="img_block">
+                                <img src="{% get_media_prefix %}{{ file.file }}" class="img-el hover1_1">
+                                <a class="btn-img-del-block btn_download" href="{% url 'download' file.file %}">
+                                    <img src="{% static 'img/download.png' %}" class="btn-img-del">
+                                </a>
+                            </div>
+                        {% endif %}
+                        {% endfor %}
+                        </div>
+
+
+                        <div class="file-view-zone">
+                        {% for file in files %}
+                        {% if '.png' not in file.file_name and '.jpg' not in file.file_name and '.jpeg' not in file.file_name and '.webp' not in file.file_name and '.svg' not in file.file_name %}
+                            <div class="file-el">
+                                <div class="file-name-block">
+                                    <span class="file-name u-text2">
+                                        {{ file.file_name }}
+                                    </span>
+                                </div>
+                                <div class="file-size-block">
+                                    <span class="file-size u-text2">
+                                        {% diff file.file_size 1048576 %} МБ
+                                    </span>
+                                </div>
+                                <a class="btn-file-del-block btn_download" href="{% url 'download' file.file %}">
+                                    <img src="{% static 'img/download.png' %}" class="btn-file-del">
+                                </a>
+                            </div>
+                        {% endif %}
+                        {% endfor %}
+                        </div>
+
+
+                        <a href="{% url 'upload_file' %}" class="u-submit" style="margin-bottom: 10px;">Upload
+                            new</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    let count_row_img_zone = 1;
+    let count_column_img_zone = 0;
+
+    var img_zone = document.getElementsByClassName('img-view-zone')[0];
+    var file_zone = document.getElementsByClassName('file-view-zone')[0];
+
+    if(document.getElementsByClassName('img-el').length !== 0){
+        img_zone.style.display = 'grid';
+    }
+    if(document.getElementsByClassName('file-el').length !== 0){
+        file_zone.style.display = 'flex';
+    }
+
+    img_blocks = document.getElementsByClassName('img_block');
+    for(let i = 0; i < img_blocks.length; i++){
+        img_blocks[i].getElementsByClassName('img-el')[0].addEventListener('click', function (e) {
+            img_blocks[i].classList.toggle('opened_img');
+            img_blocks[i].getElementsByClassName('img-el')[0].classList.toggle('abosulte_center');
+            img_blocks[i].getElementsByClassName('btn-img-del-block')[0].classList.toggle('display_none');
+        });
+    }
+
+    //resize grid
+    var count_img = img_blocks.length;
+    if (count_img > 4) {
+        count_row_img_zone = ((count_img - count_img % 4) / 4);
+        count_column_img_zone = 4;
+    } else {
+        count_column_img_zone = count_img;
+    }
+    img_zone.style.gridTemplate = '1fr '.repeat(count_row_img_zone) + '/ ' + '1fr '.repeat(count_column_img_zone);
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    var btn_download_all = document.getElementById('btn_download_all');
+    var all_btns_download = document.getElementsByClassName('btn_download');
+    btn_download_all.onclick = function (e) {
+        e.preventDefault();
+        for(let i = 0; i < all_btns_download.length; i++) {
+            window.open(all_btns_download[i].href);
+        }
+    }
+
+</script>
+{% endblock %}

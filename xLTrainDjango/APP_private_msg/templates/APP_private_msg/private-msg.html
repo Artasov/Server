@@ -10,7 +10,12 @@
                 <div class="u__form no_scrollbar" style="overflow-y: scroll">
                     <div class="u-help" style="">
                         <div class="u__fields " style="width: 100%;">
-                            <p class="u-title">PRIVATE MSG</p>
+                            <p class="u-text6 u-text-align-center" style="
+                            letter-spacing: 0.1em;
+                            color: #F5F5F5;
+                            font-weight: 500">
+                                PRIVATE MSG
+                            </p>
                             {% if captcha_invalid %}
                                 <span class="invalid" style="padding: 0; margin: 0;">{{ captcha_invalid }}</span>
                             {% endif %}
@@ -33,14 +38,14 @@
 
 
                             {% elif read %}
-                                <p class="u-text" style="max-width: 600px; padding: 0 1em; line-height: 1.2em;">
+                                <p class="u-text3" style="color: #aaaaaa; max-width: 600px; padding: 0 1em; line-height: 1.2em;">
                                     Reading...
                                 </p>
                                 <div class="u__form">
                                     <div class="u__fields">
                                         {% if msg != '' %}
                                             <label>
-                                        <textarea readonly class="u__field no_scrollbar" rows="80" cols="80" style="
+                                        <textarea readonly class="u__field no_scrollbar u-text1" rows="80" cols="80" style="
                                         min-width: 90%;
                                         max-width: 600px;
                                         min-height: 150px;
@@ -88,13 +93,13 @@
 
                             {% elif link %}
                                 <span class="success copied" style="display: none;">Copied</span>
-                                <p class="u-text" style="max-width: 600px; padding: 0 1em; line-height: 1.2em;">
+                                <p class="u-text3" style="max-width: 600px; padding: 0 1em; line-height: 1.2em; color: #5fff5f;">
                                     Link to read
                                 </p>
                                 <div class="u__form" method="post" action="{% url 'private-msg' %}">{% csrf_token %}
                                     <div class="u__fields">
-                                        <p class="u-text link_for_copy"
-                                           style="user-select: text; max-width: 40%; word-wrap:break-word;">
+                                        <p class="u-text2 link_for_copy"
+                                           style="color: #aaaaaa;user-select: text; max-width: 40%; word-wrap:break-word;">
                                             {{ link }}
                                         </p>
                                     </div>
@@ -108,7 +113,7 @@
                             {% elif not_exist %}
                                 <div class="u__form" method="post" action="{% url 'private-msg' %}">{% csrf_token %}
                                     <div class="u__fields">
-                                        <p class="u-text">{{ not_exist }}</p>
+                                        <p class="u-text2" style="color: #f5f5f5;">{{ not_exist }}</p>
                                     </div>
                                 </div>
                                 <a href="{% url 'private-msg' %}" class="u-submit" style="margin-bottom: 10px;">Create
@@ -116,8 +121,8 @@
 
 
                             {% elif create %}
-                                <p class="u-text" style="max-width: 600px; padding: 0 1em; line-height: 1.2em;">
-                                    Write a message and click encrypt. You will be given a one-time link to read the
+                                <p class="u-text1" style="color: #aaaaaa;max-width: 600px; padding: 0 1em; line-height: 1.2em;">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;Write a message and click encrypt. You will be given a one-time link to read the
                                     message. After reading, the message will be deleted.
                                 </p>
                                 <span id="size_warr" class="invalid" style="padding: 0; margin: 0; display: none;">
@@ -132,7 +137,7 @@
                                       action="{% url 'private-msg' %}">{% csrf_token %}
                                     <div class="u__fields">
                                         <label>
-                                            <textarea class="u__field no_scrollbar" name="msg" rows="80" cols="80"
+                                            <textarea class="u__field no_scrollbar u-text1" name="msg" rows="80" cols="80"
                                                       style=
                                                               "
                                             min-width: 90%;
@@ -149,7 +154,7 @@
                                         <input type="file" id="audio_input" name="voice_msg" style="display: none;">
                                         <div class="audio_recorder">
                                             <div style="display: flex; flex-direction: column; justify-content: center;">
-                                                <p class="u-text4" style="transform: translateY(-0.05em)">Voice msg</p>
+                                                <p class="u-text2" style="color:#f5f5f5; transform: translateY(-0.05em)">Voice msg</p>
                                             </div>
                                             <div class="audio_recorder-btn">
                                                 <div id="start_record"></div>
@@ -261,12 +266,6 @@
                 for_insert.before(el2);
             });
         {% endif %}
-    </script>
-    {#  hide footer  #}
-    <script>
-        window.addEventListener('load', function (e) {
-            document.getElementsByTagName('footer')[0].style.display = 'none';
-        });
     </script>
     {#  audio  #}
     <script type="text/javascript">

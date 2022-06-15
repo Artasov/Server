@@ -8,11 +8,7 @@ urlpatterns = [
     path('', views.Shop, name='shop'),
     path('buy/', views.Buy, name='buy'),
     path('pay/', views.Pay, name='pay'),
-    path('product/xLGM', views.Product, name='xL Guild Manager'),
-    path('product/xLUMRA', views.Product, name='xLUMRA'),
-    path('product/xLCracker', views.Product, name='xLCracker'),
-    path('product/xLCracker', views.Product, name='xLCracker'),
-
+    path('product/<str:product>', views.Product, name='product'),
 ]
 
 

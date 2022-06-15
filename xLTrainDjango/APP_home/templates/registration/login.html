@@ -1,13 +1,14 @@
 {% extends 'index.html' %}
 {%  load static %}
 
-{% block title %}xlartas | login{% endblock %}
+{% block title %}xlartas | LOGIN{% endblock %}
 
 {% block content %}
     <div class="u">
         <div class="u__container">
             <div class="u__content">
                 <form class="u__form" method="post" action="{% url 'login' %}">{% csrf_token %}
+                    <p class="u-text6 u-text-align-center" style="color: #F5F5F5; font-weight: 500">LOGIN</p>
 
                     <div class="u-help">
                         {% if invalid %}
@@ -17,14 +18,15 @@
                             <span class="success">{{ success }}</span>
                         {% endif %}
                         <div class="u__fields">
-                            <input name="username" type="text" placeholder="Login or Email" class="u__field">
-                            <input name="password" type="password" placeholder="Password" class="u__field">
+                            <input style="min-width: 200px;" name="username" type="text" placeholder="Login or Email" class="u__field u-text3">
+                            <input style="min-width: 200px;" name="password" type="password" placeholder="Password" class="u__field u-text3">
                         </div>
-                        <p class="u-text" style="padding: 10px 35px 0 35px; line-height: 20px;">
-                            <a href="{% url 'password_reset' %}">Reset password</a>
+                        <p style="padding: 10px 35px 0 35px; line-height: 20px;">
+                            <a class="u-text1" style="color: #777777;" href="{% url 'password_reset' %}">Reset password</a>
                         </p>
+
+                        <input class="u-submit u-text3" type="submit" value="Sign in" style="margin-top: 20px;">
                     </div>
-                    <input class="u-submit" type="submit" value="Sign in">
 
                 </form>
             </div>
@@ -35,11 +37,9 @@
         for (let i = 0; i < inputs.length; i++){
             inputs[i].addEventListener('blur', function (e) {
                 if(inputs[i].value !== ''){
-                    console.log('1')
                     inputs[i].style.borderColor = '#ff5f6c';
                 }
                 else{
-                    console.log('2')
                     inputs[i].style.borderColor = 'rgba(244, 247, 245, 0.7)';
                 }
             })

@@ -1,0 +1,53 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}xlartas | MORE{% endblock %}
+
+
+{% block content %}
+    <style>
+        .more__link{
+            color: #f5f5f5;
+            padding: 1em 1.6em;
+            margin: 1em 1em;
+            border: 2px solid #aaaaaa;
+            border-radius: 15px;
+            text-align: center;
+        }
+        ._pc .grid_tmpl{
+            grid-template: 1fr / 1fr 1fr 1fr;
+        }
+        ._touch .grid_tmpl{
+            grid-template: 1fr 1fr 1fr / 1fr;
+        }
+    </style>
+    <div class="u">
+        <div class="u__container">
+            <div class="u__content" style="justify-content: center; gap: 40px;">
+                <div class="u__form no_scrollbar" style="overflow-y: scroll">
+                    <div class="u-help u-disable-tap-highlight" style="">
+                        <div class="u__fields ">
+                            <p class="u-text6 u-text-align-center" style="
+                            letter-spacing: 0.1em;
+                            color: #F5F5F5;
+                            font-weight: 500">
+                                MORE
+                            </p>
+
+                            <div class="u__gfields u-text2 grid_tmpl">
+                                <a href="{% url 'private-msg' %}" class="more__link u-disable-tap-highlight"><span>PRIVATE</span></a>
+                                <a href="{% url 'upload_file' %}" class="more__link u-disable-tap-highlight"><span>HOST</span></a>
+                                <a href="{% url 'about' %}"       class="more__link u-disable-tap-highlight"><span>ABOUT</span></a>
+                                <a href="{% url 'donate' %}"      class="more__link u-disable-tap-highlight"><span>DONATE</span></a>
+                                {% if user.is_authenticated %}
+                                <a href="{% url 'ideas' %}"       class="more__link u-disable-tap-highlight"><span>iDEAS</span></a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
